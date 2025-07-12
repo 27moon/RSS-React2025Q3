@@ -1,0 +1,52 @@
+import { Component } from 'react';
+
+export type Character = {
+  id: number;
+  name: string;
+  species: string;
+  status: string;
+  image: string;
+};
+
+export type AllCharacters = {
+  results: Character[];
+};
+
+export class Api extends Component {
+  static async getAllCharacters(): Promise<AllCharacters> {
+    const url = 'https://rickandmortyapi.com/api/character';
+
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`error: ${response.status}`);
+      }
+      const data: AllCharacters = await response.json();
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error('Oops something went wrong:', error);
+      throw new Error('something went wrong');
+    }
+  }
+
+  static async searchCharactersByName(name: string): Promise<Character> {
+    const searchedName = name.trim();
+    const url = `https://rickandmortyapi.com/api/character/?name=${searchedName}`;
+
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`error: ${response.status}`);
+      }
+      const data: Character = await response.json();
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error('Oops something went wrong:', error);
+      throw new Error('something went wrong');
+    }
+  }
+}
