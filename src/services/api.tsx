@@ -4,8 +4,14 @@ export type Character = {
   id: number;
   name: string;
   species: string;
-  status: string;
   image: string;
+  gender: string;
+  origin: {
+    name: string;
+  };
+  location: {
+    name: string;
+  };
 };
 
 export type AllCharacters = {
