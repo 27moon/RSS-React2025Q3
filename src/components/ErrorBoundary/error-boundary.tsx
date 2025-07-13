@@ -31,7 +31,7 @@ export class ErrorBoundary extends Component<
     if (this.state.hasError) {
       return (
         <div>
-          <h2>Something went wrong! Reload the page.</h2>
+          <h2>Something went wrong! Try to reload the page.</h2>
         </div>
       );
     }

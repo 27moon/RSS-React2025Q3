@@ -17,7 +17,7 @@ export class Main extends Component<MainProps> {
     if (error) {
       return (
         <main>
-          <div>{error}</div>
+          {error && <div>{error}</div>}
           <ErrorButton />
         </main>
       );

@@ -19,6 +19,31 @@ export type AllCharacters = {
 };
 
 export class Api extends Component {
+  static getErrorMessage(statusCode: number): string {
+    switch (statusCode) {
+      case 400:
+        return 'The server cannot process the request due to a syntax error or invalid data.';
+      case 401:
+        return 'Unauthorized — The request requires user authentication.';
+      case 403:
+        return 'Forbidden.';
+      case 404:
+        return 'Character not found.';
+      case 405:
+        return 'Method Not Allowed: The request method (e.g., POST, GET) is not supported for the requested resource.';
+      case 408:
+        return 'The server timed out waiting for the request from the client. ';
+      case 500:
+        return 'Internal Server Error';
+      case 503:
+        return 'Service Unavailable';
+      case 504:
+        return 'Gateway Timeout';
+      default:
+        return `Unexpected error occurred (code of the error${status}).`;
+    }
+  }
+
   static async getAllCharacters(): Promise<AllCharacters> {
     const url = 'https://rickandmortyapi.com/api/character';
 
@@ -26,14 +51,19 @@ export class Api extends Component {
       const response = await fetch(url);
 
       if (!response.ok) {
-        throw new Error(`error: ${response.status}`);
+        const message = Api.getErrorMessage(response.status);
+        throw new Error(message);
       }
       const data: AllCharacters = await response.json();
       console.log(data);
       return data;
     } catch (error) {
       console.error('Oops something went wrong:', error);
-      throw new Error('something went wrong');
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        throw new Error('Something went wrong');
+      }
     }
   }
 
@@ -44,18 +74,20 @@ export class Api extends Component {
       const response = await fetch(url);
 
       if (!response.ok) {
-        if (response.status === 404) {
-          throw new Error('Character not found');
-        } else {
-          throw new Error(`Error: ${response.status}`);
-        }
+        const message = Api.getErrorMessage(response.status);
+        throw new Error(message);
       }
+
       const data: AllCharacters = await response.json();
       console.log(data);
       return data;
     } catch (error) {
       console.error('Oops something went wrong:', error);
-      throw error;
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        throw new Error('Something went wrong');
+      }
     }
   }
 }
