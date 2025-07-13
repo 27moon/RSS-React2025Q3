@@ -14,7 +14,7 @@ export class Card extends Component<CardProps> {
     return (
       <div className="card">
         <img className="img" src={image}></img>
-        <h3>{name}</h3>
+        <h3 className="name">{name}</h3>
         <p>Species: {species}</p>
         <p>Gender: {gender}</p>
         <p>Location: {location.name}</p>

@@ -16,6 +16,7 @@ export class App extends Component<object, AppState> {
     loading: false,
     error: null,
   };
+
   handleLoading = (loading: boolean) => {
     this.setState({ loading });
   };

@@ -12,6 +12,7 @@ export class Header extends Component<HeaderProps> {
   render() {
     return (
       <header>
+        <h1>Search Rick and Morty characters by name</h1>
         <Search
           onSearchResults={this.props.onSearchResults}
           onLoading={this.props.onLoading}

@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { Api, type AllCharacters, type Character } from '../../services/api';
 import { LS } from '../../services/ls';
+import './search.css';
 
 type SearchProps = {
   onSearchResults: (characters: Character[]) => void;
@@ -85,6 +86,7 @@ export class Search extends Component<SearchProps, SearchState> {
           onChange={this.handleInputChange}
           onKeyDown={this.handleKeyDown}
           placeholder="Search..."
+          className="input"
         />
         <button onClick={this.handleSearch}>Search</button>
       </div>
