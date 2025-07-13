@@ -37,17 +37,16 @@ export class Api extends Component {
     }
   }
 
-  static async searchCharactersByName(name: string): Promise<Character> {
+  static async searchCharactersByName(name: string): Promise<AllCharacters> {
     const searchedName = name.trim();
     const url = `https://rickandmortyapi.com/api/character/?name=${searchedName}`;
-
     try {
       const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error(`error: ${response.status}`);
       }
-      const data: Character = await response.json();
+      const data: AllCharacters = await response.json();
       console.log(data);
       return data;
     } catch (error) {

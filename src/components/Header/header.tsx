@@ -1,11 +1,16 @@
 import { Component } from 'react';
-import Search from '../Search/search';
+import { Search } from '../Search/search';
+import type { Character } from '../../services/api';
 
-export class Header extends Component {
+type HeaderProps = {
+  onSearchResults: (characters: Character[]) => void;
+};
+
+export class Header extends Component<HeaderProps> {
   render() {
     return (
       <header>
-        <Search />
+        <Search onSearchResults={this.props.onSearchResults} />
       </header>
     );
   }
