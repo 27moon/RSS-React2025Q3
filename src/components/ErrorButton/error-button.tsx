@@ -16,12 +16,12 @@ export class ErrorButton extends Component<object, ErrorButtonState> {
 
   render() {
     if (this.state.hasError) {
-      throw new Error('Mission completed - error is shown');
+      throw new Error('Error from ErrorBoundary is shown');
     }
 
     return (
       <button className="error-btn" onClick={this.handleClick}>
-        Just break it already
+        Error Button
       </button>
     );
   }
