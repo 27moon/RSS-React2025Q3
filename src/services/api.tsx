@@ -44,14 +44,18 @@ export class Api extends Component {
       const response = await fetch(url);
 
       if (!response.ok) {
-        throw new Error(`error: ${response.status}`);
+        if (response.status === 404) {
+          throw new Error('Character not found');
+        } else {
+          throw new Error(`Error: ${response.status}`);
+        }
       }
       const data: AllCharacters = await response.json();
       console.log(data);
       return data;
     } catch (error) {
       console.error('Oops something went wrong:', error);
-      throw new Error('something went wrong');
+      throw error;
     }
   }
 }
