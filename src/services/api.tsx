@@ -40,7 +40,7 @@ export class Api extends Component {
       case 504:
         return 'Gateway Timeout';
       default:
-        return `Unexpected error occurred (code of the error${status}).`;
+        return `Unexpected error occurred (code of the error${statusCode}).`;
     }
   }
 
