@@ -6,14 +6,31 @@ import { Loader } from '../Loader/loader';
 type MainProps = {
   results: Character[];
   loading: boolean;
+  error: string | null;
 };
 
 export class Main extends Component<MainProps> {
   render() {
-    const { results, loading } = this.props;
+    const { results, loading, error } = this.props;
 
-    return (
-      <main>{loading ? <Loader /> : <CardList characters={results} />}</main>
-    );
+    if (error) {
+      return (
+        <main>
+          <div>{error}</div>
+        </main>
+      );
+    } else if (loading) {
+      return (
+        <main>
+          <Loader />
+        </main>
+      );
+    } else {
+      return (
+        <main>
+          <CardList characters={results} />
+        </main>
+      );
+    }
   }
 }

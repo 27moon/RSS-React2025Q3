@@ -7,15 +7,20 @@ import { type Character } from './services/api';
 type AppState = {
   characters: Character[];
   loading: boolean;
+  error: string | null;
 };
 
 export class App extends Component<object, AppState> {
   state: AppState = {
     characters: [],
     loading: false,
+    error: null,
   };
   handleLoading = (loading: boolean) => {
     this.setState({ loading });
+  };
+  handleError = (error: string | null) => {
+    this.setState({ error });
   };
 
   handleResults = (characters: Character[]) => {
@@ -28,8 +33,13 @@ export class App extends Component<object, AppState> {
         <Header
           onSearchResults={this.handleResults}
           onLoading={this.handleLoading}
+          onError={this.handleError}
         />
-        <Main results={this.state.characters} loading={this.state.loading} />
+        <Main
+          results={this.state.characters}
+          loading={this.state.loading}
+          error={this.state.error}
+        />
       </>
     );
   }

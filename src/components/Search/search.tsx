@@ -5,6 +5,7 @@ import { LS } from '../../services/ls';
 type SearchProps = {
   onSearchResults: (characters: Character[]) => void;
   onLoading: (loading: boolean) => void;
+  onError: (error: string | null) => void;
 };
 
 type SearchState = {
@@ -26,6 +27,8 @@ export class Search extends Component<SearchProps, SearchState> {
   getCharacters = async (name: string) => {
     this.setState({ loading: true, error: null });
     this.props.onLoading(true);
+    this.props.onError(null);
+
     try {
       let data: AllCharacters;
 
@@ -39,8 +42,10 @@ export class Search extends Component<SearchProps, SearchState> {
     } catch (error) {
       if (error instanceof Error) {
         this.setState({ error: error.message });
+        this.props.onError(error.message);
       } else {
         this.setState({ error: 'no such character' });
+        this.props.onError('no such character');
       }
     } finally {
       this.setState({ loading: false });
@@ -70,7 +75,7 @@ export class Search extends Component<SearchProps, SearchState> {
   };
 
   render() {
-    const { searchedName, error } = this.state;
+    const { searchedName } = this.state;
 
     return (
       <div>
@@ -82,8 +87,6 @@ export class Search extends Component<SearchProps, SearchState> {
           placeholder="Search..."
         />
         <button onClick={this.handleSearch}>Search</button>
-
-        {error && <div>Error occurred: {error}</div>}
       </div>
     );
   }

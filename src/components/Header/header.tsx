@@ -5,6 +5,7 @@ import type { Character } from '../../services/api';
 type HeaderProps = {
   onSearchResults: (characters: Character[]) => void;
   onLoading: (loading: boolean) => void;
+  onError: (error: string | null) => void;
 };
 
 export class Header extends Component<HeaderProps> {
@@ -14,6 +15,7 @@ export class Header extends Component<HeaderProps> {
         <Search
           onSearchResults={this.props.onSearchResults}
           onLoading={this.props.onLoading}
+          onError={this.props.onError}
         />
       </header>
     );
