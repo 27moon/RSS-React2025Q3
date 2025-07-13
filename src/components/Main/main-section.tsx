@@ -2,6 +2,7 @@ import { Component } from 'react';
 import type { Character } from '../../services/api';
 import { CardList } from '../CardList/cardList';
 import { Loader } from '../Loader/loader';
+import { ErrorButton } from '../ErrorButton/error-button';
 
 type MainProps = {
   results: Character[];
@@ -17,6 +18,7 @@ export class Main extends Component<MainProps> {
       return (
         <main>
           <div>{error}</div>
+          <ErrorButton />
         </main>
       );
     } else if (loading) {
@@ -29,6 +31,7 @@ export class Main extends Component<MainProps> {
       return (
         <main>
           <CardList characters={results} />
+          <ErrorButton />
         </main>
       );
     }
