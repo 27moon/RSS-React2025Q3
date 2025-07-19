@@ -18,6 +18,20 @@ describe('Search', () => {
     expect(buttonSearch).toBeInTheDocument();
   });
 
+  it('Displays previously saved search term from localStorage on mount', () => {
+    localStorage.setItem('searchedChar', 'some character');
+    render(
+      <Search
+        onSearchResults={() => {}}
+        onLoading={() => {}}
+        onError={() => {}}
+      />
+    );
+    const input = screen.getByPlaceholderText(/search/i);
+
+    expect(input).toHaveValue('some character');
+  });
+
   it('Updates input value when user types', () => {
     render(
       <Search
