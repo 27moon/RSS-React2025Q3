@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { Search } from '../components/Search/search';
 
@@ -16,5 +16,22 @@ describe('Search', () => {
 
     expect(input).toBeInTheDocument();
     expect(buttonSearch).toBeInTheDocument();
+  });
+
+  it('Updates input value when user types', () => {
+    render(
+      <Search
+        onSearchResults={() => {}}
+        onLoading={() => {}}
+        onError={() => {}}
+      />
+    );
+
+    const input = screen.getByPlaceholderText(/search/i);
+    fireEvent.change(input, {
+      target: { value: 'some character' },
+    });
+
+    expect(input).toHaveValue('some character');
   });
 });
