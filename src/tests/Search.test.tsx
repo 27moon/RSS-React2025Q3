@@ -26,8 +26,8 @@ describe('Search', () => {
         onError={() => {}}
       />
     );
-
     const input = screen.getByPlaceholderText(/search/i);
+
     fireEvent.change(input, {
       target: { value: 'some character' },
     });
@@ -43,12 +43,30 @@ describe('Search', () => {
         onError={() => {}}
       />
     );
-
     const input = screen.getByPlaceholderText(/search/i);
     const buttonSearch = screen.getByRole('button', { name: /search/i });
 
     fireEvent.change(input, {
       target: { value: 'some character' },
+    });
+    fireEvent.click(buttonSearch);
+
+    expect(localStorage.getItem('searchedChar')).toBe('some character');
+  });
+
+  it('Trims whitespace from search input before saving', () => {
+    render(
+      <Search
+        onSearchResults={() => {}}
+        onLoading={() => {}}
+        onError={() => {}}
+      />
+    );
+    const input = screen.getByPlaceholderText(/search/i);
+    const buttonSearch = screen.getByRole('button', { name: /search/i });
+
+    fireEvent.change(input, {
+      target: { value: ' some character ' },
     });
     fireEvent.click(buttonSearch);
 
