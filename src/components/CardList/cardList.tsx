@@ -10,7 +10,7 @@ type CardListProps = {
 export class CardList extends Component<CardListProps> {
   render() {
     return (
-      <div className="cards-container">
+      <div className="cards-container" data-testid="cards-container">
         {this.props.characters.map((item) => (
           <Card key={item.id} character={item} />
         ))}
