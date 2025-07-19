@@ -32,6 +32,20 @@ describe('Search', () => {
     expect(input).toHaveValue('some character');
   });
 
+  it('Shows empty input when no saved term exists', () => {
+    localStorage.clear();
+    render(
+      <Search
+        onSearchResults={() => {}}
+        onLoading={() => {}}
+        onError={() => {}}
+      />
+    );
+    const input = screen.getByPlaceholderText(/search/i);
+
+    expect(input).toHaveValue('');
+  });
+
   it('Updates input value when user types', () => {
     render(
       <Search
