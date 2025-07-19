@@ -100,4 +100,25 @@ describe('Search', () => {
 
     expect(localStorage.getItem('searchedChar')).toBe('some character');
   });
+
+  it('Overwrites existing localStorage value when new search is performed', () => {
+    render(
+      <Search
+        onSearchResults={() => {}}
+        onLoading={() => {}}
+        onError={() => {}}
+      />
+    );
+    localStorage.setItem('searchedChar', 'some character');
+
+    const input = screen.getByPlaceholderText(/search/i);
+    const buttonSearch = screen.getByRole('button', { name: /search/i });
+
+    fireEvent.change(input, {
+      target: { value: 'some new character' },
+    });
+    fireEvent.click(buttonSearch);
+
+    expect(localStorage.getItem('searchedChar')).toBe('some new character');
+  });
 });
