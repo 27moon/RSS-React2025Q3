@@ -34,4 +34,24 @@ describe('Search', () => {
 
     expect(input).toHaveValue('some character');
   });
+
+  it('Saves search term to localStorage when search button is clicked', () => {
+    render(
+      <Search
+        onSearchResults={() => {}}
+        onLoading={() => {}}
+        onError={() => {}}
+      />
+    );
+
+    const input = screen.getByPlaceholderText(/search/i);
+    const buttonSearch = screen.getByRole('button', { name: /search/i });
+
+    fireEvent.change(input, {
+      target: { value: 'some character' },
+    });
+    fireEvent.click(buttonSearch);
+
+    expect(localStorage.getItem('searchedChar')).toBe('some character');
+  });
 });
