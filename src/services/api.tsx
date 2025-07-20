@@ -59,11 +59,7 @@ export class Api extends Component {
       return data;
     } catch (error) {
       console.error('Oops something went wrong:', error);
-      if (error instanceof Error) {
-        throw error;
-      } else {
-        throw new Error('Something went wrong');
-      }
+      throw error;
     }
   }
 
@@ -83,11 +79,7 @@ export class Api extends Component {
       return data;
     } catch (error) {
       console.error('Oops something went wrong:', error);
-      if (error instanceof Error) {
-        throw error;
-      } else {
-        throw new Error('Something went wrong');
-      }
+      throw error;
     }
   }
 }
