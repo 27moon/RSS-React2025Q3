@@ -45,14 +45,13 @@ const itemArray = [
 
 describe('Main', () => {
   it('Displays error message on error', () => {
-    render(<Main results={[]} loading={false} error={'some error'} />);
+    render(<Main results={[]} loading={false} error={'no results'} />);
 
-    expect(screen.getByText('some error')).toBeInTheDocument();
+    expect(screen.getByText('no results')).toBeInTheDocument();
   });
 
   it('Displays loading sign on loading', () => {
     render(<Main results={[]} loading={true} error={null} />);
-
     const gif = screen.getByAltText('loading');
 
     expect(gif).toBeInTheDocument();
@@ -60,7 +59,6 @@ describe('Main', () => {
 
   it('Displays card list if there is no error or loading', () => {
     render(<Main results={itemArray} loading={false} error={null} />);
-
     const cardsContainer = screen.getByTestId('cards-container');
 
     expect(cardsContainer.children.length).toEqual(itemArray.length);
