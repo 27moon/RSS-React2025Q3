@@ -12,8 +12,8 @@ export class Card extends Component<CardProps> {
       this.props.character;
 
     return (
-      <div className="card">
-        <img className="img" src={image}></img>
+      <div className="card" data-testid="card">
+        <img className="img" src={image} alt={name}></img>
         <h3 className="name">{name}</h3>
         <p>Species: {species}</p>
         <p>Gender: {gender}</p>
