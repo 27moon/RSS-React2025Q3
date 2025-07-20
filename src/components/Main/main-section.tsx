@@ -16,20 +16,20 @@ export class Main extends Component<MainProps> {
 
     if (error) {
       return (
-        <main>
+        <main data-testid="main">
           {error && <div>{error}</div>}
           <ErrorButton />
         </main>
       );
     } else if (loading) {
       return (
-        <main>
+        <main data-testid="main">
           <Loader />
         </main>
       );
     } else {
       return (
-        <main>
+        <main data-testid="main">
           <CardList characters={results} />
           <ErrorButton />
         </main>
