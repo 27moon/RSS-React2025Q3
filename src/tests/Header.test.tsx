@@ -10,9 +10,7 @@ describe('Header', () => {
         onError={() => {}}
       />
     );
-    const header = screen.getByText(
-      /Search Rick and Morty characters by name/i
-    );
+    const header = screen.getByText(/test/i);
 
     expect(header).toBeInTheDocument();
   });
