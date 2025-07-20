@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { Search } from '../components/Search/search';
+import { Api } from '../services/api';
 
 describe('Search', () => {
   it('Renders search input and search button', () => {
@@ -124,6 +125,10 @@ describe('Search', () => {
 
   it('Checks for error on unsuccessful result', async () => {
     const onError = vi.fn();
+    vi.spyOn(Api, 'searchCharactersByName').mockRejectedValue(
+      new Error('Character not found.')
+    );
+
     render(
       <Search
         onSearchResults={() => {}}
