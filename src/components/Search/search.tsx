@@ -44,9 +44,6 @@ export class Search extends Component<SearchProps, SearchState> {
       if (error instanceof Error) {
         this.setState({ error: error.message });
         this.props.onError(error.message);
-      } else {
-        this.setState({ error: 'no such character' });
-        this.props.onError('no such character');
       }
     } finally {
       this.setState({ loading: false });

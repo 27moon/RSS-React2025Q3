@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
 import { Search } from '../components/Search/search';
 
 describe('Search', () => {
@@ -120,5 +120,27 @@ describe('Search', () => {
     fireEvent.click(buttonSearch);
 
     expect(localStorage.getItem('searchedChar')).toBe('some new character');
+  });
+
+  it('Checks for error on unsuccessful result', async () => {
+    const onError = vi.fn();
+    render(
+      <Search
+        onSearchResults={() => {}}
+        onLoading={() => {}}
+        onError={onError}
+      />
+    );
+
+    const input = screen.getByPlaceholderText(/search/i);
+
+    fireEvent.change(input, {
+      target: { value: 'something non-existent' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /search/i }));
+
+    await waitFor(() => {
+      expect(onError).toHaveBeenCalledWith('Character not found.');
+    });
   });
 });
