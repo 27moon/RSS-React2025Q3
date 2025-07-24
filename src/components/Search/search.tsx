@@ -1,5 +1,10 @@
 import { Component } from 'react';
-import { Api, type AllCharacters, type Character } from '../../services/api';
+import {
+  getAllCharacters,
+  searchCharactersByName,
+  type AllCharacters,
+  type Character,
+} from '../../services/api';
 import { LS } from '../../services/ls';
 import './search.css';
 
@@ -34,9 +39,9 @@ export class Search extends Component<SearchProps, SearchState> {
       let data: AllCharacters;
 
       if (name) {
-        data = await Api.searchCharactersByName(name);
+        data = await searchCharactersByName(name);
       } else {
-        data = await Api.getAllCharacters();
+        data = await getAllCharacters();
       }
 
       this.props.onSearchResults(data.results);

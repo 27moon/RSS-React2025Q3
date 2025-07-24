@@ -1,50 +1,36 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import './App.css';
 import { Header } from './components/Header/header';
 import { Main } from './components/Main/main-section';
 import { type Character } from './services/api';
 
-type AppState = {
-  characters: Character[];
-  loading: boolean;
-  error: string | null;
-};
+export function App() {
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-export class App extends Component<object, AppState> {
-  state: AppState = {
-    characters: [],
-    loading: false,
-    error: null,
+  const handleLoading = (loading: boolean) => {
+    setLoading(loading);
   };
 
-  handleLoading = (loading: boolean) => {
-    this.setState({ loading });
+  const handleError = (error: string | null) => {
+    setError(error);
   };
 
-  handleError = (error: string | null) => {
-    this.setState({ error });
+  const handleResults = (characters: Character[]) => {
+    setCharacters(characters);
   };
 
-  handleResults = (characters: Character[]) => {
-    this.setState({ characters });
-  };
-
-  render() {
-    return (
-      <>
-        <Header
-          onSearchResults={this.handleResults}
-          onLoading={this.handleLoading}
-          onError={this.handleError}
-        />
-        <Main
-          results={this.state.characters}
-          loading={this.state.loading}
-          error={this.state.error}
-        />
-      </>
-    );
-  }
+  return (
+    <>
+      <Header
+        onSearchResults={handleResults}
+        onLoading={handleLoading}
+        onError={handleError}
+      />
+      <Main results={characters} loading={loading} error={error} />
+    </>
+  );
 }
 
 export default App;

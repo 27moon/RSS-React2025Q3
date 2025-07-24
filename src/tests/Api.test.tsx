@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { Api } from '../services/api';
+import { getAllCharacters, searchCharactersByName } from '../services/api';
 
 const itemArray = {
   results: [
@@ -64,7 +64,7 @@ describe('Api', () => {
     global.fetch = vi.fn(() =>
       Promise.resolve(new Response(JSON.stringify(itemArray)))
     );
-    const data = await Api.getAllCharacters();
+    const data = await getAllCharacters();
 
     expect(data).toEqual(itemArray);
   });
@@ -75,7 +75,7 @@ describe('Api', () => {
     global.fetch = vi.fn(() =>
       Promise.resolve(new Response(JSON.stringify(item)))
     );
-    const data = await Api.searchCharactersByName(name);
+    const data = await searchCharactersByName(name);
 
     expect(data).toEqual(item);
   });
@@ -89,9 +89,7 @@ describe('Api', () => {
       } as Response)
     );
 
-    await expect(Api.getAllCharacters()).rejects.toThrow(
-      'Character not found.'
-    );
+    await expect(getAllCharacters()).rejects.toThrow('Character not found.');
   });
 
   it('Returns error on not ok response - search by name', async () => {
@@ -105,7 +103,7 @@ describe('Api', () => {
       } as Response)
     );
 
-    await expect(Api.searchCharactersByName(name)).rejects.toThrow(
+    await expect(searchCharactersByName(name)).rejects.toThrow(
       'Character not found.'
     );
   });
@@ -113,15 +111,13 @@ describe('Api', () => {
   it('throws error on fetch data', async () => {
     global.fetch = vi.fn(() => Promise.reject(new Error('some error')));
 
-    await expect(Api.getAllCharacters()).rejects.toThrow('some error');
+    await expect(getAllCharacters()).rejects.toThrow('some error');
   });
 
   it('throws error on on fetch data by name on new Error', async () => {
     const name = 'Morty';
     global.fetch = vi.fn(() => Promise.reject(new Error('some error')));
 
-    await expect(Api.searchCharactersByName(name)).rejects.toThrow(
-      'some error'
-    );
+    await expect(searchCharactersByName(name)).rejects.toThrow('some error');
   });
 });
