@@ -1,13 +1,9 @@
-import { Component } from 'react';
+export function saveLS(item: string) {
+  const key = 'searchedChar';
+  localStorage.setItem(key, item);
+}
 
-export class LS extends Component {
-  static key = 'searchedChar';
-
-  static saveLS(item: string): void {
-    localStorage.setItem(LS.key, item);
-  }
-
-  static getLS(): string {
-    return localStorage.getItem(LS.key) || '';
-  }
+export function getLS(): string {
+  const key = 'searchedChar';
+  return localStorage.getItem(key) || '';
 }

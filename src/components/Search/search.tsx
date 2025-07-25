@@ -5,7 +5,7 @@ import {
   type AllCharacters,
   type Character,
 } from '../../services/api';
-import { LS } from '../../services/ls';
+import { getLS, saveLS } from '../../services/ls';
 import './search.css';
 
 type SearchProps = {
@@ -15,7 +15,7 @@ type SearchProps = {
 };
 
 export function Search({ onSearchResults, onLoading, onError }: SearchProps) {
-  const [searchedName, setSearchedName] = useState(() => LS.getLS() || '');
+  const [searchedName, setSearchedName] = useState(() => getLS() || '');
 
   const getCharacters = async (name: string) => {
     onLoading(true);
@@ -58,7 +58,7 @@ export function Search({ onSearchResults, onLoading, onError }: SearchProps) {
   const handleSearch = () => {
     const trimmedValue = searchedName.trim();
 
-    LS.saveLS(trimmedValue);
+    saveLS(trimmedValue);
     getCharacters(trimmedValue);
   };
 
