@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import {
   getAllCharacters,
   searchCharactersByName,
@@ -14,26 +14,12 @@ type SearchProps = {
   onError: (error: string | null) => void;
 };
 
-type SearchState = {
-  searchedName: string;
-  loading: boolean;
-  error: string | null;
-};
+export function Search({ onSearchResults, onLoading, onError }: SearchProps) {
+  const [searchedName, setSearchedName] = useState(() => LS.getLS() || '');
 
-export class Search extends Component<SearchProps, SearchState> {
-  constructor(props: SearchProps) {
-    super(props);
-    this.state = {
-      searchedName: LS.getLS(),
-      loading: false,
-      error: null,
-    };
-  }
-
-  getCharacters = async (name: string) => {
-    this.setState({ loading: true, error: null });
-    this.props.onLoading(true);
-    this.props.onError(null);
+  const getCharacters = async (name: string) => {
+    onLoading(true);
+    onError(null);
 
     try {
       let data: AllCharacters;
@@ -44,54 +30,49 @@ export class Search extends Component<SearchProps, SearchState> {
         data = await getAllCharacters();
       }
 
-      this.props.onSearchResults(data.results);
+      onSearchResults(data.results);
     } catch (error) {
-      if (error instanceof Error) {
-        this.setState({ error: error.message });
-        this.props.onError(error.message);
-      }
+      const message =
+        error instanceof Error ? error.message : 'An error occurred';
+
+      onError(message);
     } finally {
-      this.setState({ loading: false });
-      this.props.onLoading(false);
+      onLoading(false);
     }
   };
 
-  componentDidMount() {
-    this.getCharacters(this.state.searchedName);
-  }
+  useEffect(() => {
+    getCharacters(searchedName);
+  }, []);
 
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchedName: e.target.value });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchedName(e.target.value);
   };
 
-  handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      this.handleSearch();
+      handleSearch();
     }
   };
 
-  handleSearch = () => {
-    const trimmedValue = this.state.searchedName.trim();
+  const handleSearch = () => {
+    const trimmedValue = searchedName.trim();
 
     LS.saveLS(trimmedValue);
-    this.getCharacters(trimmedValue);
+    getCharacters(trimmedValue);
   };
 
-  render() {
-    const { searchedName } = this.state;
-
-    return (
-      <div>
-        <input
-          type="text"
-          value={searchedName}
-          onChange={this.handleInputChange}
-          onKeyDown={this.handleKeyDown}
-          placeholder="Search..."
-          className="input"
-        />
-        <button onClick={this.handleSearch}>Search</button>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <input
+        type="text"
+        value={searchedName}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        placeholder="Search..."
+        className="input"
+      />
+      <button onClick={handleSearch}>Search</button>
+    </div>
+  );
 }
