@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   getAllCharacters,
   searchCharactersByName,
   type AllCharacters,
   type Character,
 } from '../../services/api';
-import { getLS, saveLS } from '../../services/ls';
+
 import './search.css';
+import { useLocalStorage } from '../../hooks/LShook';
 
 type SearchProps = {
   onSearchResults: (characters: Character[]) => void;
@@ -15,7 +16,7 @@ type SearchProps = {
 };
 
 export function Search({ onSearchResults, onLoading, onError }: SearchProps) {
-  const [searchedName, setSearchedName] = useState(() => getLS() || '');
+  const { searchedName, setSearchedName, saveLS } = useLocalStorage();
 
   const getCharacters = async (name: string) => {
     onLoading(true);
