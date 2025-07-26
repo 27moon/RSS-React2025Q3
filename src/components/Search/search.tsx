@@ -7,7 +7,7 @@ import {
 } from '../../services/api';
 
 import './search.css';
-import { useLocalStorage } from '../../hooks/LShook';
+import { useLocalStorage } from '../../hooks/lsHook';
 
 type SearchProps = {
   onSearchResults: (characters: Character[]) => void;
