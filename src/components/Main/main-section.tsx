@@ -3,6 +3,8 @@ import { CardList } from '../CardList/cardList';
 import { Loader } from '../Loader/loader';
 import { ErrorButton } from '../ErrorButton/error-button';
 import { Pagination } from '../Pagination/pagination';
+import { Outlet, useSearchParams } from 'react-router';
+import './main-section.css';
 
 type MainProps = {
   results: Character[];
@@ -12,6 +14,16 @@ type MainProps = {
 };
 
 export function Main({ results, loading, error, totalPages }: MainProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const detailId = searchParams.get('details');
+
+  const handleCloseShowCard = () => {
+    if (detailId) {
+      searchParams.delete('details');
+      setSearchParams(searchParams);
+    }
+  };
+
   if (error) {
     return (
       <main data-testid="main">
@@ -28,8 +40,18 @@ export function Main({ results, loading, error, totalPages }: MainProps) {
   } else {
     return (
       <main data-testid="main">
-        <Pagination totalPages={totalPages} />
-        <CardList characters={results} />
+        <div className="containers-wrapper">
+          <div
+            className={`left-side ${detailId ? 'dimmed' : ''}`}
+            onClick={handleCloseShowCard}
+          >
+            <Pagination totalPages={totalPages} />
+            <CardList characters={results} />
+          </div>
+          <div onClick={(e) => e.stopPropagation()}>
+            <Outlet />
+          </div>
+        </div>
         <ErrorButton />
       </main>
     );
