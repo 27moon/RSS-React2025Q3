@@ -2,14 +2,16 @@ import type { Character } from '../../services/api';
 import { CardList } from '../CardList/cardList';
 import { Loader } from '../Loader/loader';
 import { ErrorButton } from '../ErrorButton/error-button';
+import { Pagination } from '../Pagination/pagination';
 
 type MainProps = {
   results: Character[];
   loading: boolean;
   error: string | null;
+  totalPages: number;
 };
 
-export function Main({ results, loading, error }: MainProps) {
+export function Main({ results, loading, error, totalPages }: MainProps) {
   if (error) {
     return (
       <main data-testid="main">
@@ -26,6 +28,7 @@ export function Main({ results, loading, error }: MainProps) {
   } else {
     return (
       <main data-testid="main">
+        <Pagination totalPages={totalPages} />
         <CardList characters={results} />
         <ErrorButton />
       </main>

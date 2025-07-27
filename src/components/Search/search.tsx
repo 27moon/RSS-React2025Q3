@@ -8,17 +8,27 @@ import {
 
 import './search.css';
 import { useLocalStorage } from '../../hooks/lsHook';
+import { useSearchParams } from 'react-router';
 
 type SearchProps = {
   onSearchResults: (characters: Character[]) => void;
   onLoading: (loading: boolean) => void;
   onError: (error: string | null) => void;
+  onTotalPages: (pages: number) => void;
 };
 
-export function Search({ onSearchResults, onLoading, onError }: SearchProps) {
+export function Search({
+  onSearchResults,
+  onLoading,
+  onError,
+  onTotalPages,
+}: SearchProps) {
   const { searchedName, setSearchedName, saveLS } = useLocalStorage();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const getCharacters = async (name: string) => {
+  const page = Number(searchParams.get('page')) || 1;
+
+  const getCharacters = async (name: string, page: number) => {
     onLoading(true);
     onError(null);
 
@@ -26,12 +36,13 @@ export function Search({ onSearchResults, onLoading, onError }: SearchProps) {
       let data: AllCharacters;
 
       if (name) {
-        data = await searchCharactersByName(name);
+        data = await searchCharactersByName(name, page);
       } else {
-        data = await getAllCharacters();
+        data = await getAllCharacters(page);
       }
 
       onSearchResults(data.results);
+      onTotalPages(data.info.pages);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'An error occurred';
@@ -43,8 +54,8 @@ export function Search({ onSearchResults, onLoading, onError }: SearchProps) {
   };
 
   useEffect(() => {
-    getCharacters(searchedName);
-  }, []);
+    getCharacters(searchedName, page);
+  }, [page]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchedName(e.target.value);
@@ -60,7 +71,8 @@ export function Search({ onSearchResults, onLoading, onError }: SearchProps) {
     const trimmedValue = searchedName.trim();
 
     saveLS(trimmedValue);
-    getCharacters(trimmedValue);
+    setSearchParams({ page: '1' });
+    getCharacters(trimmedValue, 1);
   };
 
   return (

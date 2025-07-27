@@ -1,8 +1,7 @@
-import type { ReactElement } from 'react';
 import { Link } from 'react-router';
 import './about.css';
 
-export default function About(): ReactElement {
+export default function About() {
   return (
     <>
       <div className="container">

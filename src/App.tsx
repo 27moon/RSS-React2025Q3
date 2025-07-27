@@ -12,6 +12,7 @@ export function App(): JSX.Element {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [totalPages, setTotalPages] = useState(0);
 
   const handleLoading = (loading: boolean) => {
     setLoading(loading);
@@ -25,6 +26,10 @@ export function App(): JSX.Element {
     setCharacters(characters);
   };
 
+  const handleTotalPages = (pages: number) => {
+    setTotalPages(pages);
+  };
+
   return (
     <BrowserRouter>
       <Routes>
@@ -36,8 +41,14 @@ export function App(): JSX.Element {
                 onSearchResults={handleResults}
                 onLoading={handleLoading}
                 onError={handleError}
+                onTotalPages={handleTotalPages}
               />
-              <Main results={characters} loading={loading} error={error} />
+              <Main
+                results={characters}
+                loading={loading}
+                error={error}
+                totalPages={totalPages}
+              />
             </>
           }
         />

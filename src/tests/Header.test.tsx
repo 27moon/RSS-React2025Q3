@@ -10,6 +10,7 @@ describe('Header', () => {
           onSearchResults={() => {}}
           onLoading={() => {}}
           onError={() => {}}
+          onTotalPages={() => {}}
         />
       </MemoryRouter>
     );

@@ -1,8 +1,7 @@
-import type { ReactElement } from 'react';
 import { Link } from 'react-router';
 import './not-found.css';
 
-export default function NotFound(): ReactElement {
+export default function NotFound() {
   return (
     <>
       <section className="no-page">
