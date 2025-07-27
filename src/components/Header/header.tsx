@@ -1,24 +1,36 @@
-import { Component } from 'react';
 import { Search } from '../Search/search';
 import type { Character } from '../../services/api';
+import Navigation from '../Navigation/navigation';
+import { useLocation } from 'react-router';
 
 type HeaderProps = {
   onSearchResults: (characters: Character[]) => void;
   onLoading: (loading: boolean) => void;
   onError: (error: string | null) => void;
+  onTotalPages: (pages: number) => void;
 };
+const items = ['About'];
 
-export class Header extends Component<HeaderProps> {
-  render() {
-    return (
-      <header>
-        <h1>Search Rick and Morty characters by name</h1>
+export function Header({
+  onSearchResults,
+  onLoading,
+  onError,
+  onTotalPages,
+}: HeaderProps) {
+  const location = useLocation();
+
+  return (
+    <header>
+      <h1>Search Rick and Morty characters by name</h1>
+      <Navigation items={items} />
+      {location.pathname === '/' && (
         <Search
-          onSearchResults={this.props.onSearchResults}
-          onLoading={this.props.onLoading}
-          onError={this.props.onError}
+          onSearchResults={onSearchResults}
+          onLoading={onLoading}
+          onError={onError}
+          onTotalPages={onTotalPages}
         />
-      </header>
-    );
-  }
+      )}
+    </header>
+  );
 }
