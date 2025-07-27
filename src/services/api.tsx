@@ -86,7 +86,7 @@ export async function searchCharactersByName(
   }
 }
 
-export async function getCharacterById(id: number): Promise<Character> {
+export async function searchCharacterById(id: number): Promise<Character> {
   const url = `https://rickandmortyapi.com/api/character/${id}`;
 
   try {

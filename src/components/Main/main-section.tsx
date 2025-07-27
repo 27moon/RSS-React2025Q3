@@ -15,10 +15,10 @@ type MainProps = {
 
 export function Main({ results, loading, error, totalPages }: MainProps) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const detailId = searchParams.get('details');
+  const detailsId = searchParams.get('details');
 
   const handleCloseShowCard = () => {
-    if (detailId) {
+    if (detailsId) {
       searchParams.delete('details');
       setSearchParams(searchParams);
     }
@@ -42,7 +42,7 @@ export function Main({ results, loading, error, totalPages }: MainProps) {
       <main data-testid="main">
         <div className="containers-wrapper">
           <div
-            className={`left-side ${detailId ? 'dimmed' : ''}`}
+            className={`left-side ${detailsId ? 'dimmed' : ''}`}
             onClick={handleCloseShowCard}
           >
             <Pagination totalPages={totalPages} />

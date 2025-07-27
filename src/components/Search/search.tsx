@@ -25,7 +25,6 @@ export function Search({
 }: SearchProps) {
   const { searchedName, setSearchedName, saveLS } = useLocalStorage();
   const [searchParams, setSearchParams] = useSearchParams();
-
   const page = Number(searchParams.get('page')) || 1;
 
   const getCharacters = async (name: string, page: number) => {

@@ -1,63 +1,10 @@
 import { vi } from 'vitest';
-import { getAllCharacters, searchCharactersByName } from '../services/api';
-
-const itemArray = {
-  results: [
-    {
-      id: 1,
-      name: 'Morty Smith',
-      species: 'Human',
-      image: 'https://rickandmortyapi.com/api/character/avatar/2.jpeg',
-      gender: 'Male',
-      origin: {
-        name: 'unknown',
-      },
-      location: {
-        name: 'Citadel of Ricks',
-      },
-    },
-    {
-      id: 2,
-      name: 'Rick Sanchez',
-      species: 'Human',
-      image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-      gender: 'Male',
-      origin: {
-        name: 'Earth (C-137)',
-      },
-      location: {
-        name: 'Citadel of Ricks',
-      },
-    },
-    {
-      id: 3,
-      name: 'Summer Smith',
-      species: 'Human',
-      image: 'https://rickandmortyapi.com/api/character/avatar/3.jpeg',
-      gender: 'Female',
-      origin: {
-        name: 'Earth (Replacement Dimension)',
-      },
-      location: {
-        name: 'Earth (Replacement Dimension)',
-      },
-    },
-  ],
-};
-
-const item = {
-  id: 1,
-  name: 'Morty Smith',
-  species: 'Human',
-  image: 'https://rickandmortyapi.com/api/character/avatar/2.jpeg',
-  gender: 'Male',
-  origin: {
-    name: 'unknown',
-  },
-  location: {
-    name: 'Citadel of Ricks',
-  },
-};
+import {
+  getAllCharacters,
+  searchCharacterById,
+  searchCharactersByName,
+} from '../services/api';
+import { item, itemArray } from './mockData';
 
 describe('Api', () => {
   it('Returns data on api call', async () => {
@@ -119,5 +66,21 @@ describe('Api', () => {
     global.fetch = vi.fn(() => Promise.reject(new Error('some error')));
 
     await expect(searchCharactersByName(name)).rejects.toThrow('some error');
+  });
+
+  it('Returns error on not ok response - search by id', async () => {
+    const id = 2;
+
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: false,
+        status: 404,
+        json: () => Promise.resolve({}),
+      } as Response)
+    );
+
+    await expect(searchCharacterById(id)).rejects.toThrow(
+      'Character not found.'
+    );
   });
 });

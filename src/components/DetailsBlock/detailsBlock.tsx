@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-import { getCharacterById, type Character } from '../../services/api';
+import { searchCharacterById, type Character } from '../../services/api';
 import { Loader } from '../Loader/loader';
 
 export function DetailsBlock() {
@@ -19,7 +19,7 @@ export function DetailsBlock() {
     async function fetchCharacter() {
       setLoading(true);
       try {
-        const data = await getCharacterById(Number(detailsId));
+        const data = await searchCharacterById(Number(detailsId));
 
         setCharacter(data);
       } catch (error) {
