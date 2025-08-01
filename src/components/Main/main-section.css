@@ -1,10 +1,12 @@
 .containers-wrapper {
   display: flex;
+  justify-content: center;
 }
 
 .left-side {
   flex: 1;
   padding: 1rem;
+  max-width: 1268px;
 }
 
 .left-side.dimmed {

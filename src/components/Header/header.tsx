@@ -2,6 +2,7 @@ import { Search } from '../Search/search';
 import type { Character } from '../../services/api';
 import Navigation from '../Navigation/navigation';
 import { useLocation } from 'react-router';
+import ThemeButton from '../ThemeButton/themeButton';
 
 type HeaderProps = {
   onSearchResults: (characters: Character[]) => void;
@@ -20,17 +21,20 @@ export function Header({
   const location = useLocation();
 
   return (
-    <header>
-      <h1>Search Rick and Morty characters by name</h1>
-      <Navigation items={items} />
-      {location.pathname === '/' && (
-        <Search
-          onSearchResults={onSearchResults}
-          onLoading={onLoading}
-          onError={onError}
-          onTotalPages={onTotalPages}
-        />
-      )}
-    </header>
+    <>
+      <header>
+        <ThemeButton />
+        <h1>Search Rick and Morty characters by name</h1>
+        <Navigation items={items} />
+        {location.pathname === '/' && (
+          <Search
+            onSearchResults={onSearchResults}
+            onLoading={onLoading}
+            onError={onError}
+            onTotalPages={onTotalPages}
+          />
+        )}
+      </header>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 import { useState, type JSX } from 'react';
 import './App.css';
-
+import './colors.css';
 import { Header } from './components/Header/header';
 import { Main } from './components/Main/main-section';
 import { type Character } from './services/api';

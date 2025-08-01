@@ -4,17 +4,20 @@ import { MemoryRouter, Route, Routes } from 'react-router';
 import { DetailsBlock } from '../components/DetailsBlock/detailsBlock';
 import * as Api from '../../src/services/api';
 import { item } from './mockData';
+import ContextProvider from '../context/contextProvider';
 
 describe('DetailsBlock', () => {
   it('Renders card details', async () => {
     vi.spyOn(Api, 'searchCharacterById').mockResolvedValue(item);
 
     render(
-      <MemoryRouter initialEntries={['/?details=2']}>
-        <Routes>
-          <Route path="/" element={<DetailsBlock />} />
-        </Routes>
-      </MemoryRouter>
+      <ContextProvider>
+        <MemoryRouter initialEntries={['/?details=2']}>
+          <Routes>
+            <Route path="/" element={<DetailsBlock />} />
+          </Routes>
+        </MemoryRouter>
+      </ContextProvider>
     );
 
     const image = await screen.findByAltText(`${item.name}`);

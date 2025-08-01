@@ -1,0 +1,13 @@
+.details-block {
+  margin-right: 1rem;
+}
+
+.btn-close.light {
+  background-color: var(--btn-active-bg);
+  color: var(--btn-active-txt);
+}
+
+.btn-close.dark {
+  background-color: var(--btn-active-bg);
+  color: var(--btn-active-txt);
+}

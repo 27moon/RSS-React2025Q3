@@ -13,3 +13,23 @@
   cursor: auto;
   opacity: 0.7;
 }
+
+.light .btn-active {
+  background-color: var(--btn-active-bg);
+  color: var(--btn-active-txt);
+}
+
+.light .btn-disabled {
+  background-color: var(--btn-disabled-bg);
+  color: var(--btn-disabled-txt);
+}
+
+.dark .btn-active {
+  background-color: var(--btn-active-bg);
+  color: var(--btn-active-txt);
+}
+
+.dark .btn-disabled {
+  background-color: var(--btn-disabled-bg);
+  color: var(--btn-disabled-txt);
+}

@@ -3,10 +3,15 @@ import { render, screen } from '@testing-library/react';
 import { App } from '../App';
 import { Main } from '../components/Main/main-section';
 import { MemoryRouter } from 'react-router';
+import ContextProvider from '../context/contextProvider';
 
 describe('App', () => {
   it('Renders header', async () => {
-    render(<App />);
+    render(
+      <ContextProvider>
+        <App />
+      </ContextProvider>
+    );
     const header = screen.getByText(
       /Search Rick and Morty characters by name/i
     );
@@ -16,9 +21,11 @@ describe('App', () => {
 
   it('Renders main', async () => {
     render(
-      <MemoryRouter>
-        <Main results={[]} loading={false} error={null} totalPages={1} />
-      </MemoryRouter>
+      <ContextProvider>
+        <MemoryRouter>
+          <Main results={[]} loading={false} error={null} totalPages={1} />
+        </MemoryRouter>
+      </ContextProvider>
     );
     const main = screen.getByTestId(/main/i);
 

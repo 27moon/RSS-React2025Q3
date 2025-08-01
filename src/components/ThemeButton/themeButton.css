@@ -1,0 +1,21 @@
+.theme-btn {
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin: 1rem;
+  display: flex;
+  align-self: flex-end;
+}
+.theme-btn:hover {
+  border: none;
+}
+.theme-btn.light {
+  background-image: url('../src/assets/sun.svg');
+}
+
+.theme-btn.dark {
+  background-image: url('../src/assets/moon.svg');
+}
