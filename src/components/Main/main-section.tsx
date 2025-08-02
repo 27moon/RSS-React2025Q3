@@ -5,6 +5,7 @@ import { ErrorButton } from '../ErrorButton/error-button';
 import { Pagination } from '../Pagination/pagination';
 import { Outlet, useSearchParams } from 'react-router';
 import './main-section.css';
+import { SelectedItems } from '../SelectedItemsBlock/selectedItemsBlock';
 
 type MainProps = {
   results: Character[];
@@ -14,15 +15,8 @@ type MainProps = {
 };
 
 export function Main({ results, loading, error, totalPages }: MainProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const detailsId = searchParams.get('details');
-
-  const handleCloseShowCard = () => {
-    if (detailsId) {
-      searchParams.delete('details');
-      setSearchParams(searchParams);
-    }
-  };
 
   if (error) {
     return (
@@ -41,17 +35,17 @@ export function Main({ results, loading, error, totalPages }: MainProps) {
     return (
       <main data-testid="main">
         <div className="containers-wrapper">
-          <div
-            className={`left-side ${detailsId ? 'dimmed' : ''}`}
-            onClick={handleCloseShowCard}
-          >
+          <div className={`left-side`}>
             <Pagination totalPages={totalPages} />
             <CardList characters={results} />
           </div>
-          <div onClick={(e) => e.stopPropagation()}>
-            <Outlet />
-          </div>
+          {detailsId && (
+            <div className="details-panel" onClick={(e) => e.stopPropagation()}>
+              <Outlet />
+            </div>
+          )}
         </div>
+        <SelectedItems />
         <ErrorButton />
       </main>
     );

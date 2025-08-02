@@ -11,7 +11,6 @@ export function DetailsBlock() {
   const [loading, setLoading] = useState(false);
   const detailsId = searchParams.get('details');
   const navigate = useNavigate();
-
   const context = useContext(ThemeContext);
 
   if (!context) {

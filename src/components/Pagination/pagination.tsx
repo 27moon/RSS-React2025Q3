@@ -10,7 +10,6 @@ type PaginationProps = {
 export function Pagination({ totalPages }: PaginationProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
-
   const context = useContext(ThemeContext);
 
   if (!context) {
@@ -20,7 +19,8 @@ export function Pagination({ totalPages }: PaginationProps) {
   const { theme } = context;
 
   const handlePageChange = (newPage: number) => {
-    setSearchParams({ page: newPage.toString() });
+    searchParams.set('page', newPage.toString());
+    setSearchParams(searchParams);
   };
 
   return (

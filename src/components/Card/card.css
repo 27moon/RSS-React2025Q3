@@ -7,3 +7,10 @@
 .name {
   color: aquamarine;
 }
+
+.checkbox {
+  display: flex;
+  align-self: flex-start;
+  width: 2rem;
+  height: 2rem;
+}

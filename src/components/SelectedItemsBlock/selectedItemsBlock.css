@@ -1,0 +1,13 @@
+.selected-items-wrapper {
+  padding: 1rem;
+}
+
+.btns-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.selected-items-txt {
+  padding: 1rem;
+}
