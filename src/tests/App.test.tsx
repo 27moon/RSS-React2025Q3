@@ -4,13 +4,17 @@ import { App } from '../App';
 import { Main } from '../components/Main/main-section';
 import { MemoryRouter } from 'react-router';
 import ContextProvider from '../context/contextProvider';
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
 
 describe('App', () => {
   it('Renders header', async () => {
     render(
-      <ContextProvider>
-        <App />
-      </ContextProvider>
+      <Provider store={store}>
+        <ContextProvider>
+          <App />
+        </ContextProvider>
+      </Provider>
     );
     const header = screen.getByText(
       /Search Rick and Morty characters by name/i
@@ -21,11 +25,13 @@ describe('App', () => {
 
   it('Renders main', async () => {
     render(
-      <ContextProvider>
-        <MemoryRouter>
-          <Main results={[]} loading={false} error={null} totalPages={1} />
-        </MemoryRouter>
-      </ContextProvider>
+      <Provider store={store}>
+        <ContextProvider>
+          <MemoryRouter>
+            <Main results={[]} loading={false} error={null} totalPages={1} />
+          </MemoryRouter>
+        </ContextProvider>
+      </Provider>
     );
     const main = screen.getByTestId(/main/i);
 

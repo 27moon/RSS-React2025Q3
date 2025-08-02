@@ -2,13 +2,17 @@ import { render, screen } from '@testing-library/react';
 import { Card } from '../components/Card/card';
 import { MemoryRouter } from 'react-router';
 import { item } from './mockData';
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
 
 describe('Card', () => {
   it('Displays item name and description correctly', () => {
     render(
-      <MemoryRouter>
-        <Card key={item.id} character={item} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <Card key={item.id} character={item} />
+        </MemoryRouter>
+      </Provider>
     );
 
     const image = screen.getByAltText(`${item.name}`);
