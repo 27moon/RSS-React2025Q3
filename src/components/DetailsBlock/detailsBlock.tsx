@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { searchCharacterById, type Character } from '../../services/api';
 import { Loader } from '../Loader/loader';
+import './detailsBlock.css';
+import { ThemeContext } from '../../context/themeContext';
 
 export function DetailsBlock() {
   const [searchParams] = useSearchParams();
@@ -9,6 +11,13 @@ export function DetailsBlock() {
   const [loading, setLoading] = useState(false);
   const detailsId = searchParams.get('details');
   const navigate = useNavigate();
+  const context = useContext(ThemeContext);
+
+  if (!context) {
+    throw new Error('Pagination must be used within ThemeProvider');
+  }
+
+  const { theme } = context;
 
   useEffect(() => {
     if (!detailsId) {
@@ -39,12 +48,19 @@ export function DetailsBlock() {
   };
 
   if (!detailsId) return null;
-  if (loading) return <Loader />;
+  if (loading)
+    return (
+      <div className="details-block">
+        <Loader />
+      </div>
+    );
   if (!character) return <div>Character not found.</div>;
 
   return (
-    <div>
-      <button onClick={handleCloseShowCard}>Close</button>
+    <div className="details-block" data-testid="details-block">
+      <button onClick={handleCloseShowCard} className={`btn-close ${theme}`}>
+        Close
+      </button>
       <h2>{character.name}</h2>
       <img src={character.image} alt={character.name} />
       <p>Species: {character.species}</p>

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import {
   getAllCharacters,
   searchCharactersByName,
@@ -9,6 +9,7 @@ import {
 import './search.css';
 import { useLocalStorage } from '../../hooks/lsHook';
 import { useSearchParams } from 'react-router';
+import { ThemeContext } from '../../context/themeContext';
 
 type SearchProps = {
   onSearchResults: (characters: Character[]) => void;
@@ -26,6 +27,14 @@ export function Search({
   const { searchedName, setSearchedName, saveLS } = useLocalStorage();
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
+
+  const context = useContext(ThemeContext);
+
+  if (!context) {
+    throw new Error('Pagination must be used within ThemeProvider');
+  }
+
+  const { theme } = context;
 
   const getCharacters = async (name: string, page: number) => {
     onLoading(true);
@@ -84,7 +93,9 @@ export function Search({
         placeholder="Search..."
         className="input"
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch} className={`btn-search ${theme}`}>
+        Search
+      </button>
     </div>
   );
 }

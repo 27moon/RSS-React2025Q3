@@ -1,13 +1,25 @@
 .containers-wrapper {
   display: flex;
+  gap: 20px;
+  padding-left: 5px;
 }
 
 .left-side {
-  flex: 1;
-  padding: 1rem;
+  flex: 2;
 }
 
-.left-side.dimmed {
-  opacity: 0.3;
-  cursor: pointer;
+.details-panel {
+  flex: 1;
+  margin-right: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 705px) {
+  .details-panel {
+    flex: 2;
+  }
+  .left-side {
+    flex: 1;
+  }
 }

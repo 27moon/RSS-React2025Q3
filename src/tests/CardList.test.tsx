@@ -1,6 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
 import { CardList } from '../components/CardList/cardList';
 import { MemoryRouter } from 'react-router';
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
 
 const itemArray = [
   {
@@ -47,9 +49,11 @@ const itemArray = [
 describe('CardList', () => {
   it('Renders correct number of items when data is provided', () => {
     render(
-      <MemoryRouter>
-        <CardList characters={itemArray} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <CardList characters={itemArray} />
+        </MemoryRouter>
+      </Provider>
     );
     const cardsContainer = screen.getByTestId('cards-container');
 
@@ -58,9 +62,11 @@ describe('CardList', () => {
 
   it('Correctly displays item names and descriptions', () => {
     render(
-      <MemoryRouter>
-        <CardList characters={itemArray} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <CardList characters={itemArray} />
+        </MemoryRouter>
+      </Provider>
     );
     const allCards = screen.getAllByTestId('card');
 

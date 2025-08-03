@@ -2,13 +2,16 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { Pagination } from '../components/Pagination/pagination';
 import { MemoryRouter } from 'react-router';
+import ContextProvider from '../context/contextProvider';
 
 describe('Pagination', () => {
   it('Disables prev button', () => {
     render(
-      <MemoryRouter>
-        <Pagination totalPages={1} />
-      </MemoryRouter>
+      <ContextProvider>
+        <MemoryRouter>
+          <Pagination totalPages={1} />
+        </MemoryRouter>
+      </ContextProvider>
     );
 
     expect(screen.getByText('Prev')).toBeDisabled();
@@ -16,9 +19,11 @@ describe('Pagination', () => {
 
   it('Disables next button', () => {
     render(
-      <MemoryRouter initialEntries={['/?page=2']}>
-        <Pagination totalPages={2} />
-      </MemoryRouter>
+      <ContextProvider>
+        <MemoryRouter initialEntries={['/?page=2']}>
+          <Pagination totalPages={2} />
+        </MemoryRouter>
+      </ContextProvider>
     );
 
     expect(screen.getByText('Next')).toBeDisabled();
@@ -27,9 +32,11 @@ describe('Pagination', () => {
 
   it('Disables both buttons', () => {
     render(
-      <MemoryRouter>
-        <Pagination totalPages={1} />
-      </MemoryRouter>
+      <ContextProvider>
+        <MemoryRouter>
+          <Pagination totalPages={1} />
+        </MemoryRouter>
+      </ContextProvider>
     );
 
     expect(screen.getByText('Prev')).toBeDisabled();
@@ -38,9 +45,11 @@ describe('Pagination', () => {
 
   it('Updates the page number on the next btn click', () => {
     render(
-      <MemoryRouter initialEntries={['/?page=1']}>
-        <Pagination totalPages={2} />
-      </MemoryRouter>
+      <ContextProvider>
+        <MemoryRouter initialEntries={['/?page=1']}>
+          <Pagination totalPages={2} />
+        </MemoryRouter>
+      </ContextProvider>
     );
     const nextButton = screen.getByText('Next');
 

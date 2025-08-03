@@ -1,8 +1,25 @@
 .card {
   background-color: #28282b;
   color: white;
+  padding: 0 0 0.5rem;
 }
 
 .name {
   color: aquamarine;
+}
+
+.checkbox {
+  display: flex;
+  align-self: flex-start;
+  width: 2rem;
+  height: 2rem;
+}
+
+@media (max-width: 650px) {
+  .card {
+    width: 200px;
+  }
+  .card img {
+    width: 200px;
+  }
 }

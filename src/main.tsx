@@ -4,12 +4,18 @@ import './index.css';
 import { App } from './App.tsx';
 import { ErrorBoundary } from './components/ErrorBoundary/error-boundary.tsx';
 
+import './colors.css';
+import { Provider } from 'react-redux';
+import { store } from './store/store.tsx';
+
 createRoot(
   document.querySelector('#root') || document.createElement('div')
 ).render(
   <StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
+    <Provider store={store}>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </Provider>
   </StrictMode>
 );

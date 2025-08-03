@@ -1,6 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { Main } from '../components/Main/main-section';
 import { MemoryRouter, Route, Routes } from 'react-router';
+import ContextProvider from '../context/contextProvider';
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
 
 const itemArray = [
   {
@@ -73,9 +76,18 @@ describe('Main', () => {
 
   it('Displays card list if there is no error or loading', () => {
     render(
-      <MemoryRouter>
-        <Main results={itemArray} loading={false} error={null} totalPages={1} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <ContextProvider>
+          <MemoryRouter>
+            <Main
+              results={itemArray}
+              loading={false}
+              error={null}
+              totalPages={1}
+            />
+          </MemoryRouter>
+        </ContextProvider>
+      </Provider>
     );
     const cardsContainer = screen.getByTestId('cards-container');
 
@@ -84,21 +96,25 @@ describe('Main', () => {
 
   it('Removes left side block on click', () => {
     render(
-      <MemoryRouter initialEntries={['/?details=2']}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Main
-                results={itemArray}
-                loading={false}
-                error={null}
-                totalPages={1}
+      <Provider store={store}>
+        <ContextProvider>
+          <MemoryRouter initialEntries={['/?details=2']}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Main
+                    results={itemArray}
+                    loading={false}
+                    error={null}
+                    totalPages={1}
+                  />
+                }
               />
-            }
-          />
-        </Routes>
-      </MemoryRouter>
+            </Routes>
+          </MemoryRouter>
+        </ContextProvider>
+      </Provider>
     );
     const cardsContainer = screen.getByTestId('cards-container').parentElement;
 
