@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import About from './pages/About/about';
 import NotFound from './pages/NotFound/not-found';
 import { DetailsBlock } from './components/DetailsBlock/detailsBlock';
+import ContextProvider from './context/contextProvider';
 
 export function App(): JSX.Element {
   const [characters, setCharacters] = useState<Character[]>([]);
@@ -32,32 +33,34 @@ export function App(): JSX.Element {
   };
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Header
-                onSearchResults={handleResults}
-                onLoading={handleLoading}
-                onError={handleError}
-                onTotalPages={handleTotalPages}
-              />
-              <Main
-                results={characters}
-                loading={loading}
-                error={error}
-                totalPages={totalPages}
-              />
-            </>
-          }
-        >
-          <Route path="" element={<DetailsBlock />} />
-        </Route>
-        <Route path="about" element={<About />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <ContextProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Header
+                  onSearchResults={handleResults}
+                  onLoading={handleLoading}
+                  onError={handleError}
+                  onTotalPages={handleTotalPages}
+                />
+                <Main
+                  results={characters}
+                  loading={loading}
+                  error={error}
+                  totalPages={totalPages}
+                />
+              </>
+            }
+          >
+            <Route path="" element={<DetailsBlock />} />
+          </Route>
+          <Route path="about" element={<About />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </ContextProvider>
   );
 }
