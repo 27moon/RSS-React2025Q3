@@ -24,8 +24,11 @@ const selectedCardsSlice = createSlice({
         (item) => item.id !== action.payload
       );
     },
+    unselectAll: (state) => {
+      state.selected = [];
+    },
   },
 });
 
-export const { addCard, removeCard } = selectedCardsSlice.actions;
+export const { addCard, removeCard, unselectAll } = selectedCardsSlice.actions;
 export default selectedCardsSlice.reducer;
