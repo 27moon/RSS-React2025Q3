@@ -48,7 +48,12 @@ export function DetailsBlock() {
   };
 
   if (!detailsId) return null;
-  if (loading) return <Loader />;
+  if (loading)
+    return (
+      <div className="details-block">
+        <Loader />
+      </div>
+    );
   if (!character) return <div>Character not found.</div>;
 
   return (

@@ -1,3 +1,21 @@
 .error-btn {
   margin: 1rem;
 }
+
+.error-btn.light {
+  background-color: #f97316;
+  color: #ffffff;
+}
+
+.error-btn.light:hover {
+  background-color: #ea580c;
+}
+
+.error-btn.dark {
+  background-color: #d97706;
+  color: #ffffff;
+}
+
+.error-btn.dark:hover {
+  background-color: #f59e0b;
+}

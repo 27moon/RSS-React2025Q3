@@ -32,3 +32,8 @@
   background-color: var(--btn-active-bg);
   color: var(--btn-active-txt);
 }
+
+.wrapper-theme {
+  display: flex;
+  justify-content: flex-end;
+}

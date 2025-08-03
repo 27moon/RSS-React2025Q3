@@ -1,8 +1,12 @@
 import { useSelector } from 'react-redux';
 import type { Character } from '../../services/api';
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
+import { ThemeContext } from '../../context/themeContext';
+import './saveButton.css';
 
 export function SaveButton() {
+  const context = useContext(ThemeContext);
+
   const selectedItems = useSelector(
     (state: { selectedCards: { selected: Character[] } }) =>
       state.selectedCards.selected
@@ -10,6 +14,12 @@ export function SaveButton() {
 
   const downloadLinkRef = useRef<HTMLAnchorElement>(null);
   const basicUrl = 'https://rickandmortyapi.com/api/character/';
+
+  if (!context) {
+    return null;
+  }
+
+  const { theme } = context;
 
   const handleDownload = () => {
     if (selectedItems.length === 0) return;
@@ -50,7 +60,9 @@ export function SaveButton() {
 
   return (
     <>
-      <button onClick={handleDownload}>Download</button>;
+      <button className={`save-button ${theme}`} onClick={handleDownload}>
+        Download
+      </button>
       <a ref={downloadLinkRef} style={{ display: 'none' }}></a>
     </>
   );

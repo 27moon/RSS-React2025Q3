@@ -7,9 +7,10 @@ interface ContextProviderProps {
 
 export default function ContextProvider({ children }: ContextProviderProps) {
   const themeKey = 'theme27moon';
-  const [theme, setTheme] = useState<'light' | 'dark'>(() =>
-    localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
-  );
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const savedTheme = localStorage.getItem(themeKey);
+    return savedTheme === 'dark' ? 'dark' : 'light';
+  });
 
   const toggleTheme = () => {
     const themeToBe = theme === 'light' ? 'dark' : 'light';

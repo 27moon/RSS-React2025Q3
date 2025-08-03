@@ -9,9 +9,11 @@
   display: flex;
   align-self: flex-end;
 }
+
 .theme-btn:hover {
   border: none;
 }
+
 .theme-btn.light {
   background-image: url('../src/assets/sun.svg');
 }

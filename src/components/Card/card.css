@@ -14,3 +14,12 @@
   width: 2rem;
   height: 2rem;
 }
+
+@media (max-width: 650px) {
+  .card {
+    width: 200px;
+  }
+  .card img {
+    width: 200px;
+  }
+}

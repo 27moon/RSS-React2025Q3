@@ -1,8 +1,9 @@
 import { Link } from 'react-router';
 import './about.css';
-
+import '../../components/ThemeButton/themeButton.css';
 import { useContext } from 'react';
 import { ThemeContext } from '../../context/themeContext';
+import ThemeButton from '../../components/ThemeButton/themeButton';
 
 export default function About() {
   const context = useContext(ThemeContext);
@@ -15,6 +16,9 @@ export default function About() {
 
   return (
     <>
+      <div className="wrapper-theme">
+        <ThemeButton />
+      </div>
       <div className="container">
         <div className="wrapper">
           <p>Find info about Rick and Morty characters.</p>

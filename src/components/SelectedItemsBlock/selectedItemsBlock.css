@@ -6,8 +6,30 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
+  align-items: center;
+  min-height: 3rem;
 }
 
 .selected-items-txt {
   padding: 1rem;
+}
+
+.unselect-btn.light {
+  background-color: #9f7aea;
+  color: white;
+}
+
+.unselect-btn.light:hover {
+  background-color: #7c3aed;
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.8);
+}
+
+.unselect-btn.dark {
+  background-color: #6b46c1;
+  color: white;
+}
+
+.unselect-btn.dark:hover {
+  background-color: #553c9a;
+  box-shadow: 0 0 12px rgba(85, 60, 154, 0.9);
 }
