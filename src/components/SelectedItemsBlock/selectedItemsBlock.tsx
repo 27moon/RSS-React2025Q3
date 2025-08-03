@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { Character } from '../../services/api';
 import './selectedItemsBlock.css';
 import { unselectAll } from '../../store/selectedCardsSlice';
+import { SaveButton } from '../SaveButton/saveButton';
 
 export function SelectedItems() {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ export function SelectedItems() {
         >
           Unselect all
         </button>
-        <button>Download</button>
+        <SaveButton />
       </div>
     </div>
   );
