@@ -28,4 +28,10 @@ describe('ThemeButton', () => {
 
     expect(localStorage.getItem('theme27moon')).toBe('dark');
   });
+
+  it('Throws error if ThemeToggleButton is not used within ContextProvider', () => {
+    expect(() => render(<ThemeButton />)).toThrow(
+      'ThemeToggleButton must be used within ContextProvider'
+    );
+  });
 });

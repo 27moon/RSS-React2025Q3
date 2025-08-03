@@ -19,4 +19,14 @@ describe('NotFound', () => {
     expect(header).toBeInTheDocument();
     expect(backBtn).toBeInTheDocument();
   });
+
+  it('Returns null if context is not provided', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <NotFound />
+      </MemoryRouter>
+    );
+
+    expect(container.firstChild).toBeNull();
+  });
 });

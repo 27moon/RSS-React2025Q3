@@ -9,7 +9,7 @@ export default function About() {
   const context = useContext(ThemeContext);
 
   if (!context) {
-    throw new Error('Pagination must be used within ThemeProvider');
+    throw new Error('ThemeContext must be used within ThemeProvider');
   }
 
   const { theme } = context;

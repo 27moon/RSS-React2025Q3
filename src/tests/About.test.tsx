@@ -19,4 +19,10 @@ describe('About', () => {
 
     expect(description).toBeInTheDocument();
   });
+
+  it('throws error if rendered without ThemeContext provider', () => {
+    expect(() => render(<About />)).toThrow(
+      'ThemeContext must be used within ThemeProvider'
+    );
+  });
 });

@@ -49,4 +49,14 @@ describe('SaveButton', () => {
 
     expect(URL.createObjectURL).toHaveBeenCalled();
   });
+
+  it('returns null if no context is provided', () => {
+    render(
+      <Provider store={testStore}>
+        <SaveButton />
+      </Provider>
+    );
+
+    expect(screen.queryByText(/download/i)).toBeNull();
+  });
 });

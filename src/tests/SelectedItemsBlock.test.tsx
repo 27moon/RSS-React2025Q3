@@ -40,4 +40,14 @@ describe('SelectedItemsBlock', () => {
 
     expect(screen.queryByText(/item selected/i)).toBeNull();
   });
+
+  it('returns null if no context is provided', () => {
+    const rendered = render(
+      <Provider store={testStore}>
+        <SelectedItems />
+      </Provider>
+    );
+
+    expect(rendered.container.firstChild).toBeNull();
+  });
 });

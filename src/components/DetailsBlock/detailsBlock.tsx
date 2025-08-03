@@ -57,7 +57,7 @@ export function DetailsBlock() {
   if (!character) return <div>Character not found.</div>;
 
   return (
-    <div className="details-block">
+    <div className="details-block" data-testid="details-block">
       <button onClick={handleCloseShowCard} className={`btn-close ${theme}`}>
         Close
       </button>
