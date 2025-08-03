@@ -13,6 +13,10 @@ export default function ThemeButton() {
   const { theme, toggleTheme } = context;
 
   return (
-    <button onClick={toggleTheme} className={`theme-btn ${theme}`}></button>
+    <button
+      onClick={toggleTheme}
+      className={`theme-btn ${theme}`}
+      data-testid="theme-btn"
+    ></button>
   );
 }
