@@ -8,6 +8,7 @@ import {
   useGetAllCharactersQuery,
   useSearchCharactersByNameQuery,
 } from '../../services/apiRTK';
+import { useEffect } from 'react';
 
 type SearchProps = {
   onSearchResults: (characters: Character[]) => void;
@@ -44,19 +45,26 @@ export function Search({
   const getAll = useGetAllCharactersQuery(page, { skip: !!trimmedName });
   const data = trimmedName ? searchByName.data : getAll.data;
   const error = trimmedName ? searchByName.error : getAll.error;
-  const isLoading = trimmedName ? searchByName.isLoading : getAll.isLoading;
   const isFetching = trimmedName ? searchByName.isFetching : getAll.isFetching;
 
-  onLoading(isLoading || isFetching);
-  if (error) {
-    onError('An error occurred');
-  } else {
-    onError(null);
-  }
-  if (data?.results) {
-    onSearchResults(data.results);
-    onTotalPages(data.info.pages);
-  }
+  useEffect(() => {
+    onLoading(isFetching);
+  }, [isFetching, onLoading]);
+
+  useEffect(() => {
+    if (error) {
+      onError('An error occurred');
+    } else {
+      onError(null);
+    }
+  }, [error, onError]);
+
+  useEffect(() => {
+    if (data?.results) {
+      onSearchResults(data.results);
+      onTotalPages(data.info.pages);
+    }
+  }, [data, onSearchResults, onTotalPages]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchedName(e.target.value);
