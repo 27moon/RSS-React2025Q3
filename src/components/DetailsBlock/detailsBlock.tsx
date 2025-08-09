@@ -23,6 +23,7 @@ export function DetailsBlock() {
     data: character,
     error,
     isLoading,
+    isFetching,
   } = useSearchCharacterByIdQuery(detailsId ? Number(detailsId) : skipToken);
 
   const handleCloseShowCard = () => {
@@ -31,7 +32,7 @@ export function DetailsBlock() {
   };
 
   if (!detailsId) return null;
-  if (isLoading)
+  if (isLoading || isFetching)
     return (
       <div className="details-block">
         <Loader />

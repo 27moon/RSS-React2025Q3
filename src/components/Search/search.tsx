@@ -45,8 +45,9 @@ export function Search({
   const data = trimmedName ? searchByName.data : getAll.data;
   const error = trimmedName ? searchByName.error : getAll.error;
   const isLoading = trimmedName ? searchByName.isLoading : getAll.isLoading;
+  const isFetching = trimmedName ? searchByName.isFetching : getAll.isFetching;
 
-  onLoading(isLoading);
+  onLoading(isLoading || isFetching);
   if (error) {
     onError('An error occurred');
   } else {
