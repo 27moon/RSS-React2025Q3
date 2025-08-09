@@ -37,6 +37,7 @@ export default tseslint.config(
       ...react.configs['jsx-runtime'].rules,
       '@typescript-eslint/no-explicit-any': 'error',
       'react-hooks/exhaustive-deps': 'off',
+      'react-refresh/only-export-components': 'off',
     },
     settings: {
       react: {

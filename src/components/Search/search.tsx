@@ -1,15 +1,13 @@
-import { useContext, useEffect } from 'react';
-import {
-  getAllCharacters,
-  searchCharactersByName,
-  type AllCharacters,
-  type Character,
-} from '../../services/api';
-
+import { useContext } from 'react';
+import { type Character } from '../../services/api';
 import './search.css';
 import { useLocalStorage } from '../../hooks/lsHook';
 import { useSearchParams } from 'react-router';
 import { ThemeContext } from '../../context/themeContext';
+import {
+  useGetAllCharactersQuery,
+  useSearchCharactersByNameQuery,
+} from '../../services/apiRTK';
 
 type SearchProps = {
   onSearchResults: (characters: Character[]) => void;
@@ -36,34 +34,28 @@ export function Search({
 
   const { theme } = context;
 
-  const getCharacters = async (name: string, page: number) => {
-    onLoading(true);
+  const trimmedName = searchedName.trim();
+
+  const searchByName = useSearchCharactersByNameQuery(
+    { name: trimmedName, page },
+    { skip: !trimmedName }
+  );
+
+  const getAll = useGetAllCharactersQuery(page, { skip: !!trimmedName });
+  const data = trimmedName ? searchByName.data : getAll.data;
+  const error = trimmedName ? searchByName.error : getAll.error;
+  const isLoading = trimmedName ? searchByName.isLoading : getAll.isLoading;
+
+  onLoading(isLoading);
+  if (error) {
+    onError('An error occurred');
+  } else {
     onError(null);
-
-    try {
-      let data: AllCharacters;
-
-      if (name) {
-        data = await searchCharactersByName(name, page);
-      } else {
-        data = await getAllCharacters(page);
-      }
-
-      onSearchResults(data.results);
-      onTotalPages(data.info.pages);
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'An error occurred';
-
-      onError(message);
-    } finally {
-      onLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getCharacters(searchedName, page);
-  }, [page]);
+  }
+  if (data?.results) {
+    onSearchResults(data.results);
+    onTotalPages(data.info.pages);
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchedName(e.target.value);
@@ -80,7 +72,6 @@ export function Search({
 
     saveLS(trimmedValue);
     setSearchParams({ page: '1' });
-    getCharacters(trimmedValue, 1);
   };
 
   return (

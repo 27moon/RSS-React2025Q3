@@ -1,14 +1,14 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-import { searchCharacterById, type Character } from '../../services/api';
 import { Loader } from '../Loader/loader';
 import './detailsBlock.css';
 import { ThemeContext } from '../../context/themeContext';
+import { useSearchCharacterByIdQuery } from '../../services/apiRTK';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 export function DetailsBlock() {
   const [searchParams] = useSearchParams();
-  const [character, setCharacter] = useState<Character | null>(null);
-  const [loading, setLoading] = useState(false);
+
   const detailsId = searchParams.get('details');
   const navigate = useNavigate();
   const context = useContext(ThemeContext);
@@ -19,28 +19,11 @@ export function DetailsBlock() {
 
   const { theme } = context;
 
-  useEffect(() => {
-    if (!detailsId) {
-      setCharacter(null);
-      return;
-    }
-
-    async function fetchCharacter() {
-      setLoading(true);
-      try {
-        const data = await searchCharacterById(Number(detailsId));
-
-        setCharacter(data);
-      } catch (error) {
-        console.error('Failed to fetch character:', error);
-        setCharacter(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchCharacter();
-  }, [detailsId]);
+  const {
+    data: character,
+    error,
+    isLoading,
+  } = useSearchCharacterByIdQuery(detailsId ? Number(detailsId) : skipToken);
 
   const handleCloseShowCard = () => {
     searchParams.delete('details');
@@ -48,12 +31,13 @@ export function DetailsBlock() {
   };
 
   if (!detailsId) return null;
-  if (loading)
+  if (isLoading)
     return (
       <div className="details-block">
         <Loader />
       </div>
     );
+  if (error) return <div>An Error occurred.</div>;
   if (!character) return <div>Character not found.</div>;
 
   return (
