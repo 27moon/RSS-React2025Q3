@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { type Character } from '../../services/api';
 import './search.css';
 import { useLocalStorage } from '../../hooks/lsHook';
@@ -35,17 +35,23 @@ export function Search({
 
   const { theme } = context;
 
-  const trimmedName = searchedName.trim();
+  const [searchFiredName, setSearchTriggeredName] = useState(searchedName);
+
+  const trimmedFiredName = searchFiredName.trim();
 
   const searchByName = useSearchCharactersByNameQuery(
-    { name: trimmedName, page },
-    { skip: !trimmedName }
+    { name: trimmedFiredName, page },
+    { skip: !trimmedFiredName }
   );
 
-  const getAll = useGetAllCharactersQuery(page, { skip: !!trimmedName });
-  const data = trimmedName ? searchByName.data : getAll.data;
-  const error = trimmedName ? searchByName.error : getAll.error;
-  const isFetching = trimmedName ? searchByName.isFetching : getAll.isFetching;
+  const getAll = useGetAllCharactersQuery(page, {
+    skip: trimmedFiredName ? true : false,
+  });
+  const data = trimmedFiredName ? searchByName.data : getAll.data;
+  const error = trimmedFiredName ? searchByName.error : getAll.error;
+  const isFetching = trimmedFiredName
+    ? searchByName.isFetching
+    : getAll.isFetching;
 
   useEffect(() => {
     onLoading(isFetching);
@@ -81,6 +87,7 @@ export function Search({
 
     saveLS(trimmedValue);
     setSearchParams({ page: '1' });
+    setSearchTriggeredName(trimmedValue);
   };
 
   return (
