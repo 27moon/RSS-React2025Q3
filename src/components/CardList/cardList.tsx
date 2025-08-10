@@ -1,4 +1,4 @@
-import type { Character } from '../../services/api';
+import type { Character } from '../../services/types';
 import { Card } from '../Card/card';
 import './cardList.css';
 

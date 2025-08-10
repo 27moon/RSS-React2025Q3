@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import type { Character } from '../../services/api';
+import type { Character } from '../../services/types';
 import './selectedItemsBlock.css';
 import { unselectAll } from '../../store/selectedCardsSlice';
 import { SaveButton } from '../SaveButton/saveButton';

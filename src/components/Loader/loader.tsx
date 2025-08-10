@@ -3,7 +3,7 @@ import './loader.css';
 
 export function Loader() {
   return (
-    <div>
+    <div data-testid="loader">
       <img src={load} alt="loading" className="load" />
     </div>
   );

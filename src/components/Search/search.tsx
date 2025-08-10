@@ -1,15 +1,15 @@
-import { useContext, useEffect } from 'react';
-import {
-  getAllCharacters,
-  searchCharactersByName,
-  type AllCharacters,
-  type Character,
-} from '../../services/api';
-
+import { useContext, useState } from 'react';
+import { getErrorMessage } from '../../services/functions';
+import { type Character } from '../../services/types';
 import './search.css';
 import { useLocalStorage } from '../../hooks/lsHook';
 import { useSearchParams } from 'react-router';
 import { ThemeContext } from '../../context/themeContext';
+import {
+  useGetAllCharactersQuery,
+  useSearchCharactersByNameQuery,
+} from '../../services/apiRTK';
+import { useEffect } from 'react';
 
 type SearchProps = {
   onSearchResults: (characters: Character[]) => void;
@@ -36,34 +36,49 @@ export function Search({
 
   const { theme } = context;
 
-  const getCharacters = async (name: string, page: number) => {
-    onLoading(true);
-    onError(null);
+  const [searchFiredName, setSearchTriggeredName] = useState(searchedName);
 
-    try {
-      let data: AllCharacters;
+  const trimmedFiredName = searchFiredName.trim();
 
-      if (name) {
-        data = await searchCharactersByName(name, page);
-      } else {
-        data = await getAllCharacters(page);
-      }
+  const searchByName = useSearchCharactersByNameQuery(
+    { name: trimmedFiredName, page },
+    { skip: !trimmedFiredName }
+  );
 
-      onSearchResults(data.results);
-      onTotalPages(data.info.pages);
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'An error occurred';
-
-      onError(message);
-    } finally {
-      onLoading(false);
-    }
-  };
+  const getAll = useGetAllCharactersQuery(page, {
+    skip: trimmedFiredName ? true : false,
+  });
+  const data = trimmedFiredName ? searchByName.data : getAll.data;
+  const error = trimmedFiredName ? searchByName.error : getAll.error;
+  const isFetching = trimmedFiredName
+    ? searchByName.isFetching
+    : getAll.isFetching;
 
   useEffect(() => {
-    getCharacters(searchedName, page);
-  }, [page]);
+    onLoading(isFetching);
+  }, [isFetching, onLoading]);
+
+  useEffect(() => {
+    if (!error) {
+      onError(null);
+      return;
+    }
+
+    if (typeof error === 'object' && 'status' in error) {
+      if (typeof error.status === 'number') {
+        onError(getErrorMessage(error.status));
+      } else {
+        onError('An unexpected error occurred.');
+      }
+    }
+  }, [error, onError]);
+
+  useEffect(() => {
+    if (data?.results) {
+      onSearchResults(data.results);
+      onTotalPages(data.info.pages);
+    }
+  }, [data, onSearchResults, onTotalPages]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchedName(e.target.value);
@@ -80,22 +95,35 @@ export function Search({
 
     saveLS(trimmedValue);
     setSearchParams({ page: '1' });
-    getCharacters(trimmedValue, 1);
+    setSearchTriggeredName(trimmedValue);
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        value={searchedName}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        placeholder="Search..."
-        className="input"
-      />
-      <button onClick={handleSearch} className={`btn-search ${theme}`}>
-        Search
+    <>
+      <div>
+        <input
+          type="text"
+          value={searchedName}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Search..."
+          className="input"
+        />
+        <button onClick={handleSearch} className={`btn-search ${theme}`}>
+          Search
+        </button>
+      </div>
+      <button
+        onClick={() => {
+          if (trimmedFiredName) {
+            searchByName.refetch();
+          } else {
+            getAll.refetch();
+          }
+        }}
+      >
+        refetch
       </button>
-    </div>
+    </>
   );
 }

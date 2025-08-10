@@ -1,5 +1,5 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Character } from '../services/api';
+import type { Character } from '../services/types';
 import { createSlice } from '@reduxjs/toolkit';
 
 type SelectedCardsState = {

@@ -15,9 +15,9 @@
 }
 
 .theme-btn.light {
-  background-image: url('../src/assets/sun.svg');
+  background-image: url('/sun.svg');
 }
 
 .theme-btn.dark {
-  background-image: url('../src/assets/moon.svg');
+  background-image: url('/moon.svg');
 }

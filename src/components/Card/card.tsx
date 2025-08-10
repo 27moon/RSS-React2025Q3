@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from 'react-router';
-import type { Character } from '../../services/api';
+import type { Character } from '../../services/types';
 import './card.css';
 
 import { addCard, removeCard } from '../../store/selectedCardsSlice';
