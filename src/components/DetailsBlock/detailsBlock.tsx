@@ -5,6 +5,7 @@ import './detailsBlock.css';
 import { ThemeContext } from '../../context/themeContext';
 import { useSearchCharacterByIdQuery } from '../../services/apiRTK';
 import { skipToken } from '@reduxjs/toolkit/query';
+import { getErrorMessage } from '../../services/functions';
 
 export function DetailsBlock() {
   const [searchParams] = useSearchParams();
@@ -38,7 +39,12 @@ export function DetailsBlock() {
         <Loader />
       </div>
     );
-  if (error) return <div>An Error occurred.</div>;
+  if (error) {
+    if ('status' in error && typeof error.status === 'number') {
+      return <div>{getErrorMessage(error.status)}</div>;
+    }
+    return <div>An unexpected error occurred.</div>;
+  }
   if (!character) return <div>Character not found.</div>;
 
   return (

@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import type { Character } from '../../services/api';
+import type { Character } from '../../services/types';
 import { useContext, useRef } from 'react';
 import { ThemeContext } from '../../context/themeContext';
 import './saveButton.css';

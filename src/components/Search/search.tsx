@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
-import { type Character } from '../../services/api';
+import { getErrorMessage } from '../../services/functions';
+import { type Character } from '../../services/types';
 import './search.css';
 import { useLocalStorage } from '../../hooks/lsHook';
 import { useSearchParams } from 'react-router';
@@ -58,10 +59,17 @@ export function Search({
   }, [isFetching, onLoading]);
 
   useEffect(() => {
-    if (error) {
-      onError('An error occurred');
-    } else {
+    if (!error) {
       onError(null);
+      return;
+    }
+
+    if (typeof error === 'object' && 'status' in error) {
+      if (typeof error.status === 'number') {
+        onError(getErrorMessage(error.status));
+      } else {
+        onError('An unexpected error occurred.');
+      }
     }
   }, [error, onError]);
 

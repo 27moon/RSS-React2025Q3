@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { DetailsBlock } from '../components/DetailsBlock/detailsBlock';
-import * as Api from '../../src/services/api';
+import * as Api from '../services/functions';
 import { item } from './mockData';
 import ContextProvider from '../context/contextProvider';
 

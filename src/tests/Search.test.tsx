@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { Search } from '../components/Search/search';
-import * as Api from '../../src/services/api';
+import * as Api from '../services/functions';
 import { MemoryRouter } from 'react-router';
 import ContextProvider from '../context/contextProvider';
 

@@ -1,5 +1,5 @@
 import { Search } from '../Search/search';
-import type { Character } from '../../services/api';
+import type { Character } from '../../services/types';
 import Navigation from '../Navigation/navigation';
 import { useLocation } from 'react-router';
 import ThemeButton from '../ThemeButton/themeButton';

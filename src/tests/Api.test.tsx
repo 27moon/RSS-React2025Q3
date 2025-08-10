@@ -3,7 +3,7 @@ import {
   getAllCharacters,
   searchCharacterById,
   searchCharactersByName,
-} from '../services/api';
+} from '../services/functions';
 import { item, itemArray } from './mockData';
 
 describe('Api', () => {

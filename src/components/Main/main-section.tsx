@@ -1,4 +1,4 @@
-import type { Character } from '../../services/api';
+import type { Character } from '../../services/types';
 import { CardList } from '../CardList/cardList';
 import { Loader } from '../Loader/loader';
 import { ErrorButton } from '../ErrorButton/error-button';
