@@ -1,23 +1,31 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { Search } from '../components/Search/search';
-import * as Api from '../services/functions';
 import { MemoryRouter } from 'react-router';
 import ContextProvider from '../context/contextProvider';
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
+import { ApiRTK } from '../services/apiRTK';
 
 describe('Search', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   it('Renders search input and search button', () => {
     render(
-      <ContextProvider>
-        <MemoryRouter>
-          <Search
-            onSearchResults={() => {}}
-            onLoading={() => {}}
-            onError={() => {}}
-            onTotalPages={() => {}}
-          />
-        </MemoryRouter>
-      </ContextProvider>
+      <Provider store={store}>
+        <ContextProvider>
+          <MemoryRouter>
+            <Search
+              onSearchResults={() => {}}
+              onLoading={() => {}}
+              onError={() => {}}
+              onTotalPages={() => {}}
+            />
+          </MemoryRouter>
+        </ContextProvider>
+      </Provider>
     );
     const input = screen.getByPlaceholderText(/search/i);
     const buttonSearch = screen.getByRole('button', { name: /search/i });
@@ -29,16 +37,18 @@ describe('Search', () => {
   it('Displays previously saved search term from localStorage on mount', () => {
     localStorage.setItem('searchedChar', 'some character');
     render(
-      <ContextProvider>
-        <MemoryRouter>
-          <Search
-            onSearchResults={() => {}}
-            onLoading={() => {}}
-            onError={() => {}}
-            onTotalPages={() => {}}
-          />
-        </MemoryRouter>
-      </ContextProvider>
+      <Provider store={store}>
+        <ContextProvider>
+          <MemoryRouter>
+            <Search
+              onSearchResults={() => {}}
+              onLoading={() => {}}
+              onError={() => {}}
+              onTotalPages={() => {}}
+            />
+          </MemoryRouter>
+        </ContextProvider>
+      </Provider>
     );
     const input = screen.getByPlaceholderText(/search/i);
 
@@ -48,16 +58,18 @@ describe('Search', () => {
   it('Shows empty input when no saved term exists', () => {
     localStorage.clear();
     render(
-      <ContextProvider>
-        <MemoryRouter>
-          <Search
-            onSearchResults={() => {}}
-            onLoading={() => {}}
-            onError={() => {}}
-            onTotalPages={() => {}}
-          />
-        </MemoryRouter>
-      </ContextProvider>
+      <Provider store={store}>
+        <ContextProvider>
+          <MemoryRouter>
+            <Search
+              onSearchResults={() => {}}
+              onLoading={() => {}}
+              onError={() => {}}
+              onTotalPages={() => {}}
+            />
+          </MemoryRouter>
+        </ContextProvider>
+      </Provider>
     );
     const input = screen.getByPlaceholderText(/search/i);
 
@@ -66,16 +78,18 @@ describe('Search', () => {
 
   it('Updates input value when user types', () => {
     render(
-      <ContextProvider>
-        <MemoryRouter>
-          <Search
-            onSearchResults={() => {}}
-            onLoading={() => {}}
-            onError={() => {}}
-            onTotalPages={() => {}}
-          />
-        </MemoryRouter>
-      </ContextProvider>
+      <Provider store={store}>
+        <ContextProvider>
+          <MemoryRouter>
+            <Search
+              onSearchResults={() => {}}
+              onLoading={() => {}}
+              onError={() => {}}
+              onTotalPages={() => {}}
+            />
+          </MemoryRouter>
+        </ContextProvider>
+      </Provider>
     );
     const input = screen.getByPlaceholderText(/search/i);
 
@@ -88,16 +102,18 @@ describe('Search', () => {
 
   it('Saves search term to localStorage when search button is clicked', () => {
     render(
-      <ContextProvider>
-        <MemoryRouter>
-          <Search
-            onSearchResults={() => {}}
-            onLoading={() => {}}
-            onError={() => {}}
-            onTotalPages={() => {}}
-          />
-        </MemoryRouter>
-      </ContextProvider>
+      <Provider store={store}>
+        <ContextProvider>
+          <MemoryRouter>
+            <Search
+              onSearchResults={() => {}}
+              onLoading={() => {}}
+              onError={() => {}}
+              onTotalPages={() => {}}
+            />
+          </MemoryRouter>
+        </ContextProvider>
+      </Provider>
     );
     const input = screen.getByPlaceholderText(/search/i);
     const buttonSearch = screen.getByRole('button', { name: /search/i });
@@ -112,16 +128,18 @@ describe('Search', () => {
 
   it('Trims whitespace from search input before saving', () => {
     render(
-      <ContextProvider>
-        <MemoryRouter>
-          <Search
-            onSearchResults={() => {}}
-            onLoading={() => {}}
-            onError={() => {}}
-            onTotalPages={() => {}}
-          />
-        </MemoryRouter>
-      </ContextProvider>
+      <Provider store={store}>
+        <ContextProvider>
+          <MemoryRouter>
+            <Search
+              onSearchResults={() => {}}
+              onLoading={() => {}}
+              onError={() => {}}
+              onTotalPages={() => {}}
+            />
+          </MemoryRouter>
+        </ContextProvider>
+      </Provider>
     );
     const input = screen.getByPlaceholderText(/search/i);
     const buttonSearch = screen.getByRole('button', { name: /search/i });
@@ -136,16 +154,18 @@ describe('Search', () => {
 
   it('Overwrites existing localStorage value when new search is performed', () => {
     render(
-      <ContextProvider>
-        <MemoryRouter>
-          <Search
-            onSearchResults={() => {}}
-            onLoading={() => {}}
-            onError={() => {}}
-            onTotalPages={() => {}}
-          />
-        </MemoryRouter>
-      </ContextProvider>
+      <Provider store={store}>
+        <ContextProvider>
+          <MemoryRouter>
+            <Search
+              onSearchResults={() => {}}
+              onLoading={() => {}}
+              onError={() => {}}
+              onTotalPages={() => {}}
+            />
+          </MemoryRouter>
+        </ContextProvider>
+      </Provider>
     );
     localStorage.setItem('searchedChar', 'some character');
 
@@ -162,20 +182,28 @@ describe('Search', () => {
 
   it('Checks for error on unsuccessful result', async () => {
     const onError = vi.fn();
-    vi.spyOn(Api, 'searchCharactersByName').mockRejectedValue(
-      new Error('Character not found.')
-    );
+    vi.spyOn(ApiRTK, 'useSearchCharactersByNameQuery').mockReturnValue({
+      data: undefined,
+      error: { status: 404 },
+      isLoading: false,
+      isFetching: false,
+      isSuccess: false,
+      isError: true,
+      refetch: vi.fn(),
+    });
     render(
-      <ContextProvider>
-        <MemoryRouter>
-          <Search
-            onSearchResults={() => {}}
-            onLoading={() => {}}
-            onError={onError}
-            onTotalPages={() => {}}
-          />
-        </MemoryRouter>
-      </ContextProvider>
+      <Provider store={store}>
+        <ContextProvider>
+          <MemoryRouter>
+            <Search
+              onSearchResults={() => {}}
+              onLoading={() => {}}
+              onError={onError}
+              onTotalPages={() => {}}
+            />
+          </MemoryRouter>
+        </ContextProvider>
+      </Provider>
     );
 
     const input = screen.getByPlaceholderText(/search/i);
@@ -188,5 +216,34 @@ describe('Search', () => {
     await waitFor(() => {
       expect(onError).toHaveBeenCalledWith('Character not found.');
     });
+  });
+
+  it('Calls onLoading true when data is fetching', () => {
+    const onLoadingMock = vi.fn();
+
+    vi.spyOn(ApiRTK, 'useGetAllCharactersQuery').mockReturnValue({
+      data: undefined,
+      error: undefined,
+      isLoading: false,
+      isFetching: true,
+      refetch: vi.fn(),
+    });
+
+    render(
+      <Provider store={store}>
+        <ContextProvider>
+          <MemoryRouter>
+            <Search
+              onSearchResults={() => {}}
+              onLoading={onLoadingMock}
+              onError={() => {}}
+              onTotalPages={() => {}}
+            />
+          </MemoryRouter>
+        </ContextProvider>
+      </Provider>
+    );
+
+    expect(onLoadingMock).toHaveBeenCalled();
   });
 });

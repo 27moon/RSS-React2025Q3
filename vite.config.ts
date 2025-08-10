@@ -18,6 +18,8 @@ export default defineConfig({
         'src/setupTests.{js,ts}',
         'src/**/*.d.ts',
         'src/main.tsx',
+        'src/services/functions.tsx',
+        'src/services/types.tsx',
       ],
       thresholds: {
         statements: 80,

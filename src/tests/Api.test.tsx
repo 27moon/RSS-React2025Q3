@@ -1,86 +1,184 @@
 import { vi } from 'vitest';
-import {
-  getAllCharacters,
-  searchCharacterById,
-  searchCharactersByName,
-} from '../services/functions';
-import { item, itemArray } from './mockData';
+import { itemArray } from './mockData';
+import { fetchBaseQuery } from '@reduxjs/toolkit/query';
+import type { BaseQueryApi } from '@reduxjs/toolkit/query';
+
+const mockBaseQueryApi: BaseQueryApi = {
+  signal: new AbortController().signal,
+  abort: () => {},
+  dispatch: () => {},
+  getState: () => {},
+  extra: {},
+  endpoint: '',
+  type: 'query',
+  forced: false,
+};
 
 describe('Api', () => {
   it('Returns data on api call', async () => {
     global.fetch = vi.fn(() =>
       Promise.resolve(new Response(JSON.stringify(itemArray)))
     );
-    const data = await getAllCharacters();
 
-    expect(data).toEqual(itemArray);
+    const baseQuery = fetchBaseQuery({
+      baseUrl: 'https://rickandmortyapi.com/api/',
+    });
+
+    const data = await baseQuery(
+      { url: 'character?page=1' },
+      mockBaseQueryApi,
+      {}
+    );
+
+    expect(data.data).toEqual(itemArray);
+    vi.restoreAllMocks();
   });
 
   it('Returns data by name on api call', async () => {
     const name = 'Morty';
+    const mockResponse = {
+      info: { pages: 1 },
+      results: [
+        {
+          id: 2,
+          name: 'Morty Smith',
+          species: 'Human',
+          image: 'https://rickandmortyapi.com/api/character/avatar/2.jpeg',
+          gender: 'Male',
+          origin: { name: 'Earth' },
+          location: { name: 'Earth' },
+        },
+      ],
+    };
 
     global.fetch = vi.fn(() =>
-      Promise.resolve(new Response(JSON.stringify(item)))
+      Promise.resolve(new Response(JSON.stringify(mockResponse)))
     );
-    const data = await searchCharactersByName(name);
 
-    expect(data).toEqual(item);
+    const baseQuery = fetchBaseQuery({
+      baseUrl: 'https://rickandmortyapi.com/api/',
+    });
+
+    const result = await baseQuery(
+      { url: `character/?name=${name}&page=1` },
+      mockBaseQueryApi,
+      {}
+    );
+
+    expect(result.data).toEqual(mockResponse);
+    vi.restoreAllMocks();
   });
 
   it('Returns error on not ok response', async () => {
     global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ok: false,
-        status: 404,
-        json: () => Promise.resolve({}),
-      } as Response)
+      Promise.resolve(
+        new Response(JSON.stringify({}), {
+          status: 404,
+          statusText: 'Character not found.',
+        })
+      )
+    );
+    const baseQuery = fetchBaseQuery({
+      baseUrl: 'https://rickandmortyapi.com/api/',
+    });
+
+    const result = await baseQuery(
+      { url: 'character?page=1' },
+      mockBaseQueryApi,
+      {}
     );
 
-    await expect(getAllCharacters()).rejects.toThrow('Character not found.');
+    expect(result.error?.status).toBe(404);
+    vi.restoreAllMocks();
   });
 
   it('Returns error on not ok response - search by name', async () => {
     const name = 'Morty';
 
     global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ok: false,
-        status: 404,
-        json: () => Promise.resolve({}),
-      } as Response)
+      Promise.resolve(
+        new Response(JSON.stringify({}), {
+          status: 404,
+          statusText: 'Character not found.',
+        })
+      )
     );
 
-    await expect(searchCharactersByName(name)).rejects.toThrow(
-      'Character not found.'
+    const baseQuery = fetchBaseQuery({
+      baseUrl: 'https://rickandmortyapi.com/api/',
+    });
+
+    const result = await baseQuery(
+      { url: `character/?name=${name}&page=1` },
+      mockBaseQueryApi,
+      {}
     );
+
+    expect(result.error?.status).toBe(404);
+    vi.restoreAllMocks();
   });
 
   it('throws error on fetch data', async () => {
     global.fetch = vi.fn(() => Promise.reject(new Error('some error')));
 
-    await expect(getAllCharacters()).rejects.toThrow('some error');
+    const baseQuery = fetchBaseQuery({
+      baseUrl: 'https://rickandmortyapi.com/api/',
+    });
+
+    const result = await baseQuery(
+      { url: 'character?page=1' },
+      mockBaseQueryApi,
+      {}
+    );
+
+    expect(result.error).toBeDefined();
+
+    vi.restoreAllMocks();
   });
 
-  it('throws error on on fetch data by name on new Error', async () => {
+  it('throws error on fetch data by name on new Error', async () => {
     const name = 'Morty';
     global.fetch = vi.fn(() => Promise.reject(new Error('some error')));
 
-    await expect(searchCharactersByName(name)).rejects.toThrow('some error');
+    const baseQuery = fetchBaseQuery({
+      baseUrl: 'https://rickandmortyapi.com/api/',
+    });
+
+    const result = await baseQuery(
+      { url: `character/?name=${name}&page=1` },
+      mockBaseQueryApi,
+      {}
+    );
+
+    expect(result.error).toBeDefined();
   });
 
   it('Returns error on not ok response - search by id', async () => {
     const id = 2;
 
     global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ok: false,
-        status: 404,
-        json: () => Promise.resolve({}),
-      } as Response)
+      Promise.resolve(
+        new Response(JSON.stringify({}), {
+          status: 404,
+          statusText: 'Character not found.',
+        })
+      )
     );
 
-    await expect(searchCharacterById(id)).rejects.toThrow(
-      'Character not found.'
+    const baseQuery = fetchBaseQuery({
+      baseUrl: 'https://rickandmortyapi.com/api/',
+    });
+    const result = await baseQuery(
+      { url: `character/${id}` },
+      mockBaseQueryApi,
+      {}
     );
+
+    expect(result.error).toBeDefined();
+    expect(result.error?.status).toBe(404);
+
+    vi.restoreAllMocks();
   });
+
+  it('Caches page data', () => {});
 });
