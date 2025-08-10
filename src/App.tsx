@@ -3,7 +3,7 @@ import './App.css';
 import './colors.css';
 import { Header } from './components/Header/header';
 import { Main } from './components/Main/main-section';
-import { type Character } from './services/functions';
+import { type Character } from './services/types';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import About from './pages/About/about';
 import NotFound from './pages/NotFound/not-found';
