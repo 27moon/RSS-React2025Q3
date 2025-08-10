@@ -25,6 +25,7 @@ export function DetailsBlock() {
     error,
     isLoading,
     isFetching,
+    refetch,
   } = useSearchCharacterByIdQuery(detailsId ? Number(detailsId) : skipToken);
 
   const handleCloseShowCard = () => {
@@ -58,6 +59,7 @@ export function DetailsBlock() {
       <p>Gender: {character.gender}</p>
       <p>Origin: {character.origin.name}</p>
       <p>Location: {character.location.name}</p>
+      <button onClick={refetch}>refetch</button>
     </div>
   );
 }

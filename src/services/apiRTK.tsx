@@ -9,10 +9,12 @@ export const ApiRTK = createApi({
     searchCharacterById: builder.query<Character, number>({
       query: (id) => `character/${id}`,
       providesTags: ['Characters'],
+      keepUnusedDataFor: 300,
     }),
     getAllCharacters: builder.query<AllCharacters, number>({
       query: (page = 1) => `character?page=${page}`,
       providesTags: ['Characters'],
+      keepUnusedDataFor: 300,
     }),
     searchCharactersByName: builder.query<
       AllCharacters,

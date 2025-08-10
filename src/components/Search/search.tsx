@@ -99,18 +99,31 @@ export function Search({
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        value={searchedName}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        placeholder="Search..."
-        className="input"
-      />
-      <button onClick={handleSearch} className={`btn-search ${theme}`}>
-        Search
+    <>
+      <div>
+        <input
+          type="text"
+          value={searchedName}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Search..."
+          className="input"
+        />
+        <button onClick={handleSearch} className={`btn-search ${theme}`}>
+          Search
+        </button>
+      </div>
+      <button
+        onClick={() => {
+          if (trimmedFiredName) {
+            searchByName.refetch();
+          } else {
+            getAll.refetch();
+          }
+        }}
+      >
+        refetch
       </button>
-    </div>
+    </>
   );
 }
