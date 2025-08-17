@@ -1,11 +1,11 @@
 // File: /Users/marta/repos/RSS-React2025Q3/src/app/[[...slug]]/page.tsx
-import * as entry from '../../../../src/app/page.jsx';
+import * as entry from '../../../../src/app/[locale]/page.jsx';
 import type {
   ResolvingMetadata,
   ResolvingViewport,
 } from 'next/dist/lib/metadata/types/metadata-interface.js';
 
-type TEntry = typeof import('../../../../src/app/page.jsx');
+type TEntry = typeof import('../../../../src/app/[locale]/page.jsx');
 
 type SegmentParams<T extends Object = any> =
   T extends Record<string, any>

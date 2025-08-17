@@ -4,6 +4,7 @@ import './card.css';
 
 import { addCard, removeCard } from '../../store/selectedCardsSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import Image from 'next/image';
 
 type CardProps = {
   character: Character;
@@ -34,12 +35,13 @@ export function Card({ character }: CardProps) {
   const handleCardClick = () => {
     const params = new URLSearchParams(searchParams?.toString());
     params.set('page', page);
+    params.set('details', id.toString());
     router.push(`?${params.toString()}`);
   };
 
   return (
     <div className="card" data-testid="card" onClick={handleCardClick}>
-      <img className="img" src={image} alt={name}></img>
+      <Image src={image} alt={name} width={250} height={250} className="img" />
       <h3 className="name">{name}</h3>
       <input
         className="checkbox"

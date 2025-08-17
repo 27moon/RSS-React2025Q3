@@ -2,9 +2,8 @@
 const nextConfig = {
   output: 'export', // Outputs a Single-Page Application (SPA).
   distDir: './dist', // Changes the build output directory to `./dist/`.
-  experimental: {
-    appDir: 'src/app',
+  images: {
+    unoptimized: true,
   },
 };
-
 export default nextConfig;

@@ -7,6 +7,7 @@ import { Pagination } from '../Pagination/pagination';
 import { useSearchParams } from 'next/navigation';
 import './main-section.css';
 import { SelectedItems } from '../SelectedItemsBlock/selectedItemsBlock';
+import { DetailsBlock } from '../DetailsBlock/detailsBlock';
 
 type MainProps = {
   results: Character[];
@@ -42,7 +43,7 @@ export function Main({ results, loading, error, totalPages }: MainProps) {
           </div>
           {detailsId && (
             <div className="details-panel" onClick={(e) => e.stopPropagation()}>
-              {/* <Outlet /> */}
+              <DetailsBlock id={Number(detailsId)} />
             </div>
           )}
         </div>

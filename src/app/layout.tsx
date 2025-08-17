@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import ContextProvider from '../context/contextProvider';
 import '../App.css';
 import '../index.css';
+
 export const metadata: Metadata = {
   title: 'Rick and Morty',
   description: 'find characters',

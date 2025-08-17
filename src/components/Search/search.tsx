@@ -12,7 +12,7 @@ import {
 } from '../../services/apiRTK';
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
 
 type SearchProps = {
   onSearchResults?: (characters: Character[]) => void;
@@ -30,8 +30,8 @@ export function Search({
   const { searchedName, setSearchedName, saveLS } = useLocalStorage();
   const searchParams = useSearchParams();
   const page = Number(searchParams?.get('page')) || 1;
-
   const context = useContext(ThemeContext);
+  const router = useRouter();
 
   if (!context) {
     throw new Error('Pagination must be used within ThemeProvider');
@@ -68,6 +68,9 @@ export function Search({
     }
 
     if (typeof error === 'object' && 'status' in error) {
+      if (error.status === 404) {
+        onError('No results found.');
+      }
       if (typeof error.status === 'number') {
         onError(getErrorMessage(error.status));
       } else {
@@ -95,9 +98,7 @@ export function Search({
 
   const handleSearch = () => {
     const trimmedValue = searchedName.trim();
-
     saveLS(trimmedValue);
-
     setSearchTriggeredName(trimmedValue);
 
     const params = new URLSearchParams(searchParams?.toString() ?? '');
