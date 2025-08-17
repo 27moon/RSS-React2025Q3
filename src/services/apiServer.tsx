@@ -12,7 +12,7 @@ export async function getAllCharacters(page = 1): Promise<AllCharacters> {
       throw new Error(message);
     }
     const data: AllCharacters = await response.json();
-    console.log(data);
+
     return data;
   } catch (error) {
     console.error('Oops something went wrong:', error);
