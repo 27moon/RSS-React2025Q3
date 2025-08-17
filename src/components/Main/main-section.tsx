@@ -1,9 +1,10 @@
+'use client';
 import type { Character } from '../../services/types';
 import { CardList } from '../CardList/cardList';
 import { Loader } from '../Loader/loader';
 import { ErrorButton } from '../ErrorButton/error-button';
 import { Pagination } from '../Pagination/pagination';
-import { Outlet, useSearchParams } from 'react-router';
+import { useSearchParams } from 'next/navigation';
 import './main-section.css';
 import { SelectedItems } from '../SelectedItemsBlock/selectedItemsBlock';
 
@@ -15,8 +16,8 @@ type MainProps = {
 };
 
 export function Main({ results, loading, error, totalPages }: MainProps) {
-  const [searchParams] = useSearchParams();
-  const detailsId = searchParams.get('details');
+  const searchParams = useSearchParams();
+  const detailsId = searchParams?.get('details');
 
   if (error) {
     return (
@@ -41,7 +42,7 @@ export function Main({ results, loading, error, totalPages }: MainProps) {
           </div>
           {detailsId && (
             <div className="details-panel" onClick={(e) => e.stopPropagation()}>
-              <Outlet />
+              {/* <Outlet /> */}
             </div>
           )}
         </div>

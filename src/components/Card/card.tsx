@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from 'react-router';
+import { useSearchParams, useRouter } from 'next/navigation';
 import type { Character } from '../../services/types';
 import './card.css';
 
@@ -11,8 +11,9 @@ type CardProps = {
 
 export function Card({ character }: CardProps) {
   const { id, name, image } = character;
-  const [searchParams] = useSearchParams();
-  const page = searchParams.get('page') || '1';
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const page = searchParams?.get('page') || '1';
   const dispatch = useDispatch();
 
   const selectedItems = useSelector(
@@ -30,21 +31,25 @@ export function Card({ character }: CardProps) {
     }
   };
 
+  const handleCardClick = () => {
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set('page', page);
+    router.push(`?${params.toString()}`);
+  };
+
   return (
-    <Link to={`?page=${page}&details=${character.id}`}>
-      <div className="card" data-testid="card">
-        <img className="img" src={image} alt={name}></img>
-        <h3 className="name">{name}</h3>
-        <input
-          className="checkbox"
-          type="checkbox"
-          checked={selectedItems}
-          onChange={handleCheckboxChange}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        />
-      </div>
-    </Link>
+    <div className="card" data-testid="card" onClick={handleCardClick}>
+      <img className="img" src={image} alt={name}></img>
+      <h3 className="name">{name}</h3>
+      <input
+        className="checkbox"
+        type="checkbox"
+        checked={selectedItems}
+        onChange={handleCheckboxChange}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      />
+    </div>
   );
 }

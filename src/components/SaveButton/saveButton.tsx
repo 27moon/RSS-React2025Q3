@@ -1,3 +1,4 @@
+'use client';
 import { useSelector } from 'react-redux';
 import type { Character } from '../../services/types';
 import { useContext, useRef } from 'react';

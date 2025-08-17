@@ -1,4 +1,5 @@
-import { Link } from 'react-router';
+'use client';
+import Link from 'next/link';
 import './navigation.css';
 
 type Props = {
@@ -14,7 +15,7 @@ export default function Navigation({ items }: Props) {
         <ul>
           {items.map((item) => (
             <li key={item} className={`li-menu`}>
-              <Link className="nav-link" to={`/${item}`}>
+              <Link href={`/${item.toLowerCase()}`} className="nav-link">
                 {item}
               </Link>
             </li>

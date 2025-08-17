@@ -5,3 +5,13 @@
   padding: 0;
   text-align: center;
 }
+
+body.light {
+  background-color: white;
+  color: black;
+}
+
+body.dark {
+  background-color: #121212;
+  color: #f0f0f0;
+}

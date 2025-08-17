@@ -1,22 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export function useLocalStorage() {
   const key = 'searchedChar';
 
-  const saveLS = (item: string) => {
-    localStorage.setItem(key, item);
+  useEffect(() => {
+    const savedChar = localStorage.getItem(key);
+
+    if (savedChar) {
+      setSearchedName(savedChar);
+    }
+  }, []);
+
+  const saveLS = (value: string) => {
+    setSearchedName(value);
+    localStorage.setItem(key, value);
   };
 
   const getLS = (): string => {
     return localStorage.getItem(key) || '';
   };
 
-  const [searchedName, setSearchedName] = useState<string>(() => getLS());
+  const [searchedName, setSearchedName] = useState('');
 
   return {
     searchedName,
     setSearchedName,
-    saveLS,
     getLS,
+    saveLS,
   };
 }

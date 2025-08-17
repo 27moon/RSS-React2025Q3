@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router';
+import { useSearchParams, useRouter } from 'next/navigation';
 import './pagination.css';
 import { useContext } from 'react';
 import { ThemeContext } from '../../context/themeContext';
@@ -8,8 +8,9 @@ type PaginationProps = {
 };
 
 export function Pagination({ totalPages }: PaginationProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = Number(searchParams.get('page')) || 1;
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const currentPage = Number(searchParams?.get('page')) || 1;
   const context = useContext(ThemeContext);
 
   if (!context) {
@@ -19,8 +20,9 @@ export function Pagination({ totalPages }: PaginationProps) {
   const { theme } = context;
 
   const handlePageChange = (newPage: number) => {
-    searchParams.set('page', newPage.toString());
-    setSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set('page', newPage.toString());
+    router.push(`?${params.toString()}`);
   };
 
   return (

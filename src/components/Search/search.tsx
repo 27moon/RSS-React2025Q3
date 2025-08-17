@@ -1,32 +1,35 @@
+'use client';
 import { useContext, useState } from 'react';
 import { getErrorMessage } from '../../services/functions';
 import { type Character } from '../../services/types';
 import './search.css';
 import { useLocalStorage } from '../../hooks/lsHook';
-import { useSearchParams } from 'react-router';
+
 import { ThemeContext } from '../../context/themeContext';
 import {
   useGetAllCharactersQuery,
   useSearchCharactersByNameQuery,
 } from '../../services/apiRTK';
 import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import router from 'next/router';
 
 type SearchProps = {
-  onSearchResults: (characters: Character[]) => void;
-  onLoading: (loading: boolean) => void;
-  onError: (error: string | null) => void;
-  onTotalPages: (pages: number) => void;
+  onSearchResults?: (characters: Character[]) => void;
+  onLoading?: (loading: boolean) => void;
+  onError?: (error: string | null) => void;
+  onTotalPages?: (pages: number) => void;
 };
 
 export function Search({
-  onSearchResults,
-  onLoading,
-  onError,
-  onTotalPages,
+  onSearchResults = () => {},
+  onLoading = () => {},
+  onError = () => {},
+  onTotalPages = () => {},
 }: SearchProps) {
   const { searchedName, setSearchedName, saveLS } = useLocalStorage();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const page = Number(searchParams.get('page')) || 1;
+  const searchParams = useSearchParams();
+  const page = Number(searchParams?.get('page')) || 1;
 
   const context = useContext(ThemeContext);
 
@@ -94,8 +97,12 @@ export function Search({
     const trimmedValue = searchedName.trim();
 
     saveLS(trimmedValue);
-    setSearchParams({ page: '1' });
+
     setSearchTriggeredName(trimmedValue);
+
+    const params = new URLSearchParams(searchParams?.toString() ?? '');
+    params.set('page', '1');
+    router.push(`/?${params.toString()}`);
   };
 
   return (
