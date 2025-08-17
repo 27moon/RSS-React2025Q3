@@ -1,18 +1,23 @@
+'use client';
 import { useContext } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
 import { Loader } from '../Loader/loader';
 import './detailsBlock.css';
 import { ThemeContext } from '../../context/themeContext';
 import { useSearchCharacterByIdQuery } from '../../services/apiRTK';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { getErrorMessage } from '../../services/functions';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
-export function DetailsBlock() {
-  const [searchParams] = useSearchParams();
+type DetailsBlockProps = {
+  id: number;
+};
 
-  const detailsId = searchParams.get('details');
-  const navigate = useNavigate();
+export function DetailsBlock({ id }: DetailsBlockProps) {
+  const searchParams = useSearchParams();
   const context = useContext(ThemeContext);
+  const router = useRouter();
 
   if (!context) {
     throw new Error('Pagination must be used within ThemeProvider');
@@ -26,14 +31,15 @@ export function DetailsBlock() {
     isLoading,
     isFetching,
     refetch,
-  } = useSearchCharacterByIdQuery(detailsId ? Number(detailsId) : skipToken);
+  } = useSearchCharacterByIdQuery(id ? Number(id) : skipToken);
 
   const handleCloseShowCard = () => {
-    searchParams.delete('details');
-    navigate({ search: searchParams.toString() });
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('details');
+    router.replace(`?${params.toString()}`);
   };
 
-  if (!detailsId) return null;
+  if (!id) return null;
   if (isLoading || isFetching)
     return (
       <div className="details-block">
@@ -54,7 +60,12 @@ export function DetailsBlock() {
         Close
       </button>
       <h2>{character.name}</h2>
-      <img src={character.image} alt={character.name} />
+      <Image
+        src={character.image}
+        alt={character.name}
+        width={300}
+        height={300}
+      />
       <p>Species: {character.species}</p>
       <p>Gender: {character.gender}</p>
       <p>Origin: {character.origin.name}</p>

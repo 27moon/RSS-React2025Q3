@@ -1,8 +1,10 @@
+'use client';
 import { useSelector } from 'react-redux';
 import type { Character } from '../../services/types';
-import { useContext, useRef } from 'react';
+import { useContext } from 'react';
 import { ThemeContext } from '../../context/themeContext';
 import './saveButton.css';
+import { generateCSV } from '../../app/actions/generateCSV';
 
 export function SaveButton() {
   const context = useContext(ThemeContext);
@@ -12,58 +14,31 @@ export function SaveButton() {
       state.selectedCards.selected
   );
 
-  const downloadLinkRef = useRef<HTMLAnchorElement>(null);
-  const basicUrl = 'https://rickandmortyapi.com/api/character/';
-
   if (!context) {
     return null;
   }
 
   const { theme } = context;
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (selectedItems.length === 0) return;
 
-    const headers = [
-      'Name',
-      'Species',
-      'Gender',
-      'Origin',
-      'Location',
-      'Details URL',
-    ];
+    const response = await generateCSV(selectedItems);
 
-    const rows = selectedItems.map((item: Character) => [
-      item.name,
-      item.species,
-      item.gender,
-      item.origin.name,
-      item.location.name,
-      `${basicUrl}${item.id}`,
-    ]);
+    if (response) {
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
 
-    const csv = [headers, ...rows]
-      .map((row) => row.map((field) => `"${field}"`).join(','))
-      .join('\n');
-
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-
-    if (downloadLinkRef.current) {
-      downloadLinkRef.current.href = url;
-      downloadLinkRef.current.download = `${selectedItems.length}_items.csv`;
-      downloadLinkRef.current.click();
-
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${selectedItems.length}_items.csv`;
+      link.click();
       setTimeout(() => URL.revokeObjectURL(url), 100);
     }
   };
-
   return (
-    <>
-      <button className={`save-button ${theme}`} onClick={handleDownload}>
-        Download
-      </button>
-      <a ref={downloadLinkRef} style={{ display: 'none' }}></a>
-    </>
+    <button className={`save-button ${theme}`} onClick={handleDownload}>
+      Download
+    </button>
   );
 }

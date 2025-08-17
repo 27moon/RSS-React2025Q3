@@ -1,3 +1,4 @@
+'use client';
 import { useContext, useState } from 'react';
 import './error-button.css';
 import { ThemeContext } from '../../context/themeContext';
