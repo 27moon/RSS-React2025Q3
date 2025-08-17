@@ -1,10 +1,10 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 import type { Character } from '../../services/types';
-import './card.css';
-
 import { addCard, removeCard } from '../../store/selectedCardsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
+
+import './card.css';
 
 type CardProps = {
   character: Character;
