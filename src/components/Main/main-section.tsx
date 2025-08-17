@@ -2,7 +2,6 @@
 import type { Character } from '../../services/types';
 import { CardList } from '../CardList/cardList';
 import { Loader } from '../Loader/loader';
-import { ErrorButton } from '../ErrorButton/error-button';
 import { Pagination } from '../Pagination/pagination';
 import { useSearchParams } from 'next/navigation';
 import './main-section.css';
@@ -24,7 +23,6 @@ export function Main({ results, loading, error, totalPages }: MainProps) {
     return (
       <main data-testid="main">
         <div>{error}</div>
-        <ErrorButton />
       </main>
     );
   } else if (loading) {
@@ -48,7 +46,6 @@ export function Main({ results, loading, error, totalPages }: MainProps) {
           )}
         </div>
         <SelectedItems />
-        <ErrorButton />
       </main>
     );
   }
