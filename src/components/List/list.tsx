@@ -2,6 +2,9 @@ import './list.css';
 import { co2Resource } from '../helpers/getData';
 import { useState } from 'react';
 import { YearPicker } from '../YearPicker/yearPicker';
+import { CO2Table } from '../Table/table';
+import { ColumnsPicker } from '../ColumnsPicker/columnsPicker';
+import { extraColumns } from '../../helpers/helpers';
 
 export default function List() {
   const data = co2Resource.read();
@@ -11,6 +14,8 @@ export default function List() {
   const [selectedYear, setSelectedYear] = useState(2023);
   const [prevYear, setPrevYear] = useState<number | null>(null);
   const [highlight, setHighlight] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
 
   const handleYearChange = (year: number) => {
     setPrevYear(selectedYear);
@@ -22,6 +27,12 @@ export default function List() {
     }, 2000);
   };
 
+  const toggleColumn = (col: string) => {
+    setSelectedColumns((prev) =>
+      prev.includes(col) ? prev.filter((c) => c !== col) : [...prev, col]
+    );
+  };
+
   return (
     <>
       <h2>CO2 Data</h2>
@@ -30,57 +41,24 @@ export default function List() {
         selectedYear={selectedYear}
         onYearChange={handleYearChange}
       />
+      <button onClick={() => setIsModalOpen(true)}>Select extra columns</button>
+      {isModalOpen && (
+        <ColumnsPicker
+          extraColumns={extraColumns}
+          selectedColumns={selectedColumns}
+          toggleColumn={toggleColumn}
+          close={() => setIsModalOpen(false)}
+        />
+      )}
 
-      <div className="table-wrapper">
-        <div className="header-row">
-          <div className="cell">Country</div>
-          <div className="cell">ISO</div>
-          <div className="cell">Year</div>
-          <div className="cell">Population</div>
-          <div className="cell">CO2</div>
-          <div className="cell">CO2 per Capita</div>
-        </div>
-
-        {countries.map((el) => {
-          const country = data[el];
-
-          const yearData = country.data.find((el) => el.year === selectedYear);
-
-          const prevYearData = country.data.find((el) => el.year === prevYear);
-
-          const changed = (cellName: string) => {
-            if (!prevYearData) return false;
-            return yearData?.[cellName] !== prevYearData?.[cellName];
-          };
-
-          return (
-            <div className="row" key={el}>
-              <div className="cell country">{el}</div>
-              <div className="cell">{country.iso_code ?? 'N/A'}</div>
-              <div
-                className={`cell ${highlight && changed('year') ? 'highlight' : ''}`}
-              >
-                {yearData?.year ?? 'N/A'}
-              </div>
-              <div
-                className={`cell ${highlight && changed('population') ? 'highlight' : ''}`}
-              >
-                {yearData?.population?.toLocaleString() ?? 'N/A'}
-              </div>
-              <div
-                className={`cell ${highlight && changed('co2') ? 'highlight' : ''}`}
-              >
-                {yearData?.co2 ?? 'N/A'}
-              </div>
-              <div
-                className={`cell ${highlight && changed('co2_per_capita') ? 'highlight' : ''}`}
-              >
-                {yearData?.co2_per_capita ?? 'N/A'}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <CO2Table
+        data={data}
+        countries={countries}
+        selectedYear={selectedYear}
+        prevYear={prevYear}
+        highlight={highlight}
+        selectedColumns={selectedColumns}
+      />
     </>
   );
 }

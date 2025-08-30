@@ -1,0 +1,16 @@
+.modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-columns {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 2px solid #ccccff;
+  padding: 10px;
+  margin: 10px 0;
+}
