@@ -31,18 +31,9 @@
   border-bottom: 2px solid #333;
 }
 
-.row:nth-child(even) {
-  background-color: #ccccff;
-}
-.row:nth-child(even) .cell {
-  background-color: #ccccff;
-}
 .country {
   font-weight: bold;
   color: #373748;
-}
-.highlight {
-  background-color: #fbffba;
 }
 
 .cell.iso {
@@ -50,4 +41,13 @@
 }
 .cell.year {
   flex: 0 0 80px;
+}
+.row:nth-child(even) {
+  background-color: #ccccff;
+}
+.row:nth-child(even) .cell {
+  background-color: #ccccff;
+}
+.highlight {
+  background-color: #fbffba !important;
 }

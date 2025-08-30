@@ -21,14 +21,6 @@ body {
 
 button {
   cursor: pointer;
-  background-color: lightgray;
-  border: lightgray 1px solid;
-  padding: 1rem;
-  transition: 0.3s;
-}
-
-button:hover {
-  border: blue 1px solid;
 }
 
 a {

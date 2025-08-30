@@ -5,6 +5,7 @@ import { YearPicker } from '../YearPicker/yearPicker';
 import { CO2Table } from '../Table/table';
 import { ColumnsPicker } from '../ColumnsPicker/columnsPicker';
 import { extraColumns } from '../../helpers/helpers';
+import { Search } from '../Search/search';
 
 export default function List() {
   const data = co2Resource.read();
@@ -16,6 +17,12 @@ export default function List() {
   const [highlight, setHighlight] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
+
+  const [search, setSearch] = useState('');
+
+  const filteredCountries = countries.filter((country) =>
+    country.toLowerCase().startsWith(search.toLowerCase())
+  );
 
   const handleYearChange = (year: number) => {
     setPrevYear(selectedYear);
@@ -29,7 +36,7 @@ export default function List() {
 
   const toggleColumn = (col: string) => {
     setSelectedColumns((prev) =>
-      prev.includes(col) ? prev.filter((c) => c !== col) : [...prev, col]
+      prev.includes(col) ? prev.filter((el) => el !== col) : [...prev, col]
     );
   };
 
@@ -41,7 +48,11 @@ export default function List() {
         selectedYear={selectedYear}
         onYearChange={handleYearChange}
       />
+
+      <Search value={search} onChange={setSearch} />
+
       <button onClick={() => setIsModalOpen(true)}>Select extra columns</button>
+
       {isModalOpen && (
         <ColumnsPicker
           extraColumns={extraColumns}
@@ -50,10 +61,9 @@ export default function List() {
           close={() => setIsModalOpen(false)}
         />
       )}
-
       <CO2Table
         data={data}
-        countries={countries}
+        countries={filteredCountries}
         selectedYear={selectedYear}
         prevYear={prevYear}
         highlight={highlight}
