@@ -28,6 +28,9 @@
 
 .header-row .cell {
   font-weight: bold;
+}
+.header-row {
+  min-width: max-content;
   border-bottom: 2px solid #333;
 }
 
@@ -50,4 +53,11 @@
 }
 .highlight {
   background-color: #fbffba !important;
+}
+
+.controlls-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }

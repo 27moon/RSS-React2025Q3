@@ -6,6 +6,7 @@ import { CO2Table } from '../Table/table';
 import { ColumnsPicker } from '../ColumnsPicker/columnsPicker';
 import { extraColumns } from '../../helpers/helpers';
 import { Search } from '../Search/search';
+import { Sort } from '../Sort/sort';
 
 export default function List() {
   const data = co2Resource.read();
@@ -20,9 +21,33 @@ export default function List() {
 
   const [search, setSearch] = useState('');
 
-  const filteredCountries = countries.filter((country) =>
-    country.toLowerCase().startsWith(search.toLowerCase())
-  );
+  const [sortOption, setSortOption] = useState<
+    'name-asc' | 'name-desc' | 'pop-asc' | 'pop-desc'
+  >('name-asc');
+
+  function getPopulation(country: string) {
+    const yearData = data[country].data.find((el) => el.year === selectedYear);
+
+    if (yearData && yearData.population) {
+      return yearData.population;
+    }
+    return 0;
+  }
+
+  const filteredCountries = countries
+    .filter((country) => country.toLowerCase().startsWith(search.toLowerCase()))
+    .sort((a, b) => {
+      if (sortOption === 'name-asc') return a.localeCompare(b);
+      if (sortOption === 'name-desc') return b.localeCompare(a);
+
+      const populationA = getPopulation(a);
+      const populationB = getPopulation(b);
+
+      if (sortOption === 'pop-desc') return populationB - populationA;
+      if (sortOption === 'pop-asc') return populationA - populationB;
+
+      return 0;
+    });
 
   const handleYearChange = (year: number) => {
     setPrevYear(selectedYear);
@@ -49,9 +74,13 @@ export default function List() {
         onYearChange={handleYearChange}
       />
 
-      <Search value={search} onChange={setSearch} />
-
-      <button onClick={() => setIsModalOpen(true)}>Select extra columns</button>
+      <div className="controlls-wrapper">
+        <Search value={search} onChange={setSearch} />
+        <Sort value={sortOption} onChange={setSortOption} />
+        <button onClick={() => setIsModalOpen(true)}>
+          Select extra columns
+        </button>
+      </div>
 
       {isModalOpen && (
         <ColumnsPicker

@@ -2,7 +2,7 @@ import './search.css';
 
 type SearchProps = {
   value: string;
-  onChange: (newValue: string) => void;
+  onChange: (value: string) => void;
 };
 
 export function Search({ value, onChange }: SearchProps) {
