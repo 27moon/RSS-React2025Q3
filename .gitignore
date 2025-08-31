@@ -1,0 +1,4 @@
+node_modules
+dist
+coverage
+co2-data.json
