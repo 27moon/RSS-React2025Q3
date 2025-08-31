@@ -1,6 +1,6 @@
 import type { CO2Data } from '../types/types';
-import '../List/list.css';
 import React from 'react';
+import '../List/list.css';
 
 type CO2TableProps = {
   data: CO2Data;
