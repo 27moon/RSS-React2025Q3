@@ -1,10 +1,12 @@
+import React from 'react';
+
 type YearPickerProps = {
   years: (number | undefined)[];
   selectedYear: number;
   onYearChange: (year: number) => void;
 };
 
-export function YearPicker({
+export const YearPicker = React.memo(function YearPicker({
   years,
   selectedYear,
   onYearChange,
@@ -27,4 +29,4 @@ export function YearPicker({
       </label>
     </div>
   );
-}
+});

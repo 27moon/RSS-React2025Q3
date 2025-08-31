@@ -1,5 +1,6 @@
 import type { CO2Data } from '../types/types';
 import '../List/list.css';
+import React from 'react';
 
 type CO2TableProps = {
   data: CO2Data;
@@ -19,7 +20,7 @@ const basicColumns = [
   'CO2 per Capita',
 ];
 
-export function CO2Table({
+export const CO2Table = React.memo(function CO2Table({
   data,
   countries,
   selectedYear,
@@ -100,4 +101,4 @@ export function CO2Table({
       })}
     </div>
   );
-}
+});

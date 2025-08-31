@@ -1,6 +1,6 @@
 import './list.css';
 import { co2Resource } from '../helpers/getData';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { YearPicker } from '../YearPicker/yearPicker';
 import { CO2Table } from '../Table/table';
 import { ColumnsPicker } from '../ColumnsPicker/columnsPicker';
@@ -34,30 +34,39 @@ export default function List() {
     return 0;
   }
 
-  const filteredCountries = countries
-    .filter((country) => country.toLowerCase().startsWith(search.toLowerCase()))
-    .sort((a, b) => {
-      if (sortOption === 'name-asc') return a.localeCompare(b);
-      if (sortOption === 'name-desc') return b.localeCompare(a);
+  const filteredCountries = useMemo(() => {
+    return countries
+      .filter((country) =>
+        country.toLowerCase().startsWith(search.toLowerCase())
+      )
+      .sort((a, b) => {
+        if (sortOption === 'name-asc') return a.localeCompare(b);
+        if (sortOption === 'name-desc') return b.localeCompare(a);
 
-      const populationA = getPopulation(a);
-      const populationB = getPopulation(b);
+        const populationA = getPopulation(a);
+        const populationB = getPopulation(b);
 
-      if (sortOption === 'pop-desc') return populationB - populationA;
-      if (sortOption === 'pop-asc') return populationA - populationB;
+        if (sortOption === 'pop-desc') return populationB - populationA;
+        if (sortOption === 'pop-asc') return populationA - populationB;
 
-      return 0;
-    });
+        return 0;
+      });
+  }, [countries, search, sortOption, selectedYear]);
 
-  const handleYearChange = (year: number) => {
-    setPrevYear(selectedYear);
-    setSelectedYear(Number(year));
-    setHighlight(true);
+  const memoSelectedColumns = useMemo(() => selectedColumns, [selectedColumns]);
 
-    setTimeout(() => {
-      setHighlight(false);
-    }, 2000);
-  };
+  const handleYearChange = useCallback(
+    (year: number) => {
+      setPrevYear(selectedYear);
+      setSelectedYear(Number(year));
+      setHighlight(true);
+
+      setTimeout(() => {
+        setHighlight(false);
+      }, 2000);
+    },
+    [selectedYear]
+  );
 
   const toggleColumn = (col: string) => {
     setSelectedColumns((prev) =>
@@ -85,7 +94,7 @@ export default function List() {
       {isModalOpen && (
         <ColumnsPicker
           extraColumns={extraColumns}
-          selectedColumns={selectedColumns}
+          selectedColumns={memoSelectedColumns}
           toggleColumn={toggleColumn}
           close={() => setIsModalOpen(false)}
         />
@@ -96,7 +105,7 @@ export default function List() {
         selectedYear={selectedYear}
         prevYear={prevYear}
         highlight={highlight}
-        selectedColumns={selectedColumns}
+        selectedColumns={memoSelectedColumns}
       />
     </>
   );
