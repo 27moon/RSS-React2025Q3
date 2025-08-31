@@ -68,11 +68,11 @@ export default function List() {
     [selectedYear]
   );
 
-  const toggleColumn = (col: string) => {
+  const toggleColumn = useCallback((col: string) => {
     setSelectedColumns((prev) =>
       prev.includes(col) ? prev.filter((el) => el !== col) : [...prev, col]
     );
-  };
+  }, []);
 
   return (
     <>
